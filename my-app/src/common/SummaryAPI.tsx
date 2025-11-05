@@ -17,5 +17,9 @@ const SummaryApi = {
         url : '/api/bookmarks',
         method : 'get'
     },
+    googleLogin: {
+        method: 'POST',
+        url: '/api/user/google-login',
+    },
 }
 export default SummaryApi

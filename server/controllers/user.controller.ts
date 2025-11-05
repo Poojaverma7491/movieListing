@@ -258,3 +258,71 @@ export async function getLoggedInUserController(
     });
   }
 }
+
+//Google OAth
+
+export async function googleOAuthCallbackController(
+  req: AuthenticatedRequest, 
+  res: Response
+): Promise<Response> {
+  try {
+    const { fullName, email, googleId, avatar } = req.body;
+
+    if (!email || !googleId) {
+      return res.status(400).json({
+        message: 'Missing Google user info',
+        error: true,
+        success: false,
+      });
+    }
+
+    let user = await UserModel.findOne({ email });
+
+    if (!user) {
+      user = new UserModel({
+        fullName,
+        email,
+        avatar,
+        verify_email: true,
+        status: 'Active',
+        refresh_token: googleId,
+      });
+
+      await user.save();
+    }
+
+    const accesstoken = await generatedAccessToken(user._id);
+    const refreshToken = await generatedRefreshToken(user._id);
+
+    await UserModel.findByIdAndUpdate(user._id, {
+      last_login_date: new Date(),
+    });
+
+    const cookiesOption: CookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      path: '/',
+    };
+
+    res.cookie('accessToken', accesstoken, cookiesOption);
+    res.cookie('refreshToken', refreshToken, cookiesOption);
+
+    return res.json({
+      message: 'Google login successful',
+      error: false,
+      success: true,
+      data: {
+        accesstoken,
+        refreshToken,
+      },
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message || 'Internal server error',
+      error: true,
+      success: false,
+    });
+  }
+}
+

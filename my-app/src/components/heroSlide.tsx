@@ -35,7 +35,6 @@ const HeroSlide: React.FC = () => {
       try {
         const res = await tmdbApi.getMoviesList(movieType.popular, { params: { page: 1 } }) as any;
         setMovieItems(res.results.slice(0, 10));
-        console.log(res.data)
       } catch {
         console.error('Failed to fetch hero movies');
       }

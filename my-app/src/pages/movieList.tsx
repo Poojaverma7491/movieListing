@@ -18,26 +18,12 @@ interface MovieListProps {
   type?: string;
   id?: string | number;
   genreId?: string;
+  userLoggedIn?: boolean;
 }
 
-const MovieList: React.FC<MovieListProps> = ({ category: cat, type, id, genreId }) => {
+const MovieList: React.FC<MovieListProps> = ({ category: cat, type, id, genreId, userLoggedIn = false }) => {
   const [items, setItems] = useState<MediaItem[]>([]);
-  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false); // ✅ added
   const swiperRef = useRef<SwiperType | null>(null);
-
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const res = await fetch('/api/user', { credentials: 'include' });
-        const data = await res.json();
-        setUserLoggedIn(data.success);
-      } catch {
-        setUserLoggedIn(false);
-      }
-    };
-    checkUser();
-  }, []);
-
   useEffect(() => {
     const controller = new AbortController();
 

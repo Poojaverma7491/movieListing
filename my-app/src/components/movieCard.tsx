@@ -9,17 +9,20 @@ import {
   Box,
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import ShareIcon from '@mui/icons-material/Share';
 import { Rating } from '@mui/material';
 import { category } from '../api/tmdbApi';
 import apiConfig from '../api/apiConfig';
 import { MediaItem } from '../types/media';
+import toast from 'react-hot-toast';
+import { useAuth } from '../hooks/AuthProvider';
 
 interface MovieCardProps {
   item: MediaItem;
   category: keyof typeof category;
-  likedOverride?: boolean | null;
+  bookmarkedOverride?: boolean | null;
   disableLike?: boolean;
   userLoggedIn?: boolean;
 }
@@ -27,50 +30,73 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({
   item,
   category: cat,
-  likedOverride = null,
-  disableLike = false,
-  userLoggedIn = false,
+  bookmarkedOverride = null,
 }) => {
-  const [liked, setLiked] = useState<boolean>(false);
+  const [bookmarked, setbookmarked] = useState<boolean>(false);
   const link = `/home/${cat}/${item.id}`;
   const bg = apiConfig.w500Image(item.poster_path || item.backdrop_path || '');
+  const { userLoggedIn } = useAuth();
+
 
   useEffect(() => {
     if (!userLoggedIn) return;
-
-    if (likedOverride !== null) {
-      setLiked(likedOverride);
+    if (bookmarkedOverride !== null) {
+      setbookmarked(bookmarkedOverride);
     } else {
       const checkBookmark = async () => {
         try {
           const res = await fetch('/api/bookmarks', { credentials: 'include' });
           const data = await res.json();
-          const isLiked = data.data?.includes(item.id);
-          setLiked(isLiked);
+          const isbookmarked = data.data?.includes(item.id);
+          setbookmarked(isbookmarked);
         } catch (err) {
           console.error("Failed to check bookmarks");
         }
       };
       checkBookmark();
     }
-  }, [item.id, likedOverride, userLoggedIn]);
+  }, [item.id, bookmarkedOverride, userLoggedIn]);
 
   const toggleLike = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!userLoggedIn) return;
+    if (!userLoggedIn) {
+      toast('Please log in to bookmark movies.', {
+        icon: '🔒',
+        style: {
+          background: '#333',
+          color: '#fff',
+        },
+      });
+      return;
+    }
 
     try {
-      const endpoint = liked ? '/api/bookmarks/remove' : '/api/bookmarks/add';
+      const endpoint = bookmarked ? '/api/bookmarks/remove' : '/api/bookmarks/add';
       await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ movieId: item.id }),
       });
-
-      setLiked((prev) => !prev);
+      setbookmarked((prev) => !prev);
     } catch (err) {
       console.error("Bookmark error:", err);
+    }
+  };
+   const handleShare = () => {
+    const title = item.title || item.name || 'Movie';
+    const description = item.overview || 'No description available.';
+    const releaseDate = item.release_date || item.first_air_date || 'Unknown release date';
+
+    const shareText = `🎬 ${title}\n🗓️ Release Date: ${releaseDate}\n📝 Description: ${description}`;
+    navigator.clipboard.writeText(shareText);
+    if (navigator.share) {
+      navigator.share({
+        title,
+        text: shareText,
+      }).catch((err) => {
+        console.error('Share failed:', err);
+      });
     }
   };
 
@@ -88,8 +114,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
         "&:hover .play-button": {
           opacity: 1,
         },
-      }}
-    >
+      }}>
       <Box component={Link} to={link} sx={{ display: "block" }}>
         <CardMedia
           component="div"
@@ -99,8 +124,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "relative",
-          }}
-        >
+          }}>
           <Box
             className="play-button"
             sx={{
@@ -113,33 +137,47 @@ const MovieCard: React.FC<MovieCardProps> = ({
               backgroundColor: "#276b77ff",
               borderRadius: "50%",
               padding: 1,
-            }}
-          >
+            }}>
             <PlayArrowIcon fontSize="large" sx={{ color: "#fff" }} />
           </Box>
         </CardMedia>
       </Box>
-
-      {userLoggedIn && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            borderRadius: "50%",
-            zIndex: 1,
+      <Box
+        sx={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          display: "flex",
+          flexDirection: "column",
+          gap: 0.5,
+          borderRadius: 2,
+          padding: 0.5,
+          zIndex: 1,
+        }}>
+        <IconButton
+          onClick={toggleLike}
+          sx={{   
+            color: "white", 
+            backgroundColor: "rgba(0, 0, 0, 0.6)", 
+            boxShadow: 2,
+            backdropFilter: "blur(4px)"
           }}
-        >
-          <IconButton
-            onClick={toggleLike}
-            sx={{ color: "white" }}
-            disabled={disableLike}
-          >
-            {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          </IconButton>
-        </Box>
-      )}
+          aria-label="Favorite">
+          {bookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+        </IconButton>
+        <IconButton
+        onClick={ handleShare }
+        sx={{ 
+          color: "white", 
+          backgroundColor: "rgba(0, 0, 0, 0.6)", 
+          boxShadow: 2,
+          backdropFilter: "blur(4px)"
+        }}
+        aria-label="Share">
+        <ShareIcon />
+      </IconButton>
+
+      </Box>
 
       <CardContent
         sx={{
@@ -150,26 +188,38 @@ const MovieCard: React.FC<MovieCardProps> = ({
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-        }}
-      >
-        <Typography variant="subtitle2" fontWeight="bold" noWrap>
+        }}>
+        <Typography
+          variant="subtitle2"
+          fontWeight="bold"
+          noWrap
+          title={item.title || item.name}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            cursor: 'default',
+          }}>
           {item.title || item.name}
         </Typography>
 
-        <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
-          Release: {item.release_date || item.first_air_date || "N/A"}
+        <Typography 
+          variant="caption" 
+          color="text.secondary" sx={{ mt: 1 }}>
+            Release: {item.release_date || item.first_air_date || "N/A"}
         </Typography>
 
         <Rating
           name="read-only-rating"
+          value={(item.vote_average ?? 0) / 2}
           precision={0.5}
           size="small"
+          readOnly
           sx={{
             "& .MuiRating-iconFilled": {
               color: "#000000ff",
             },
-          }}
-        />
+          }}/>
         <Typography variant="body2">
           Rating: {item.vote_average?.toFixed(1) ?? 'N/A'}
         </Typography>

@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export default function useAuth() {
+const AuthContext = createContext<any>(null);
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -8,6 +10,12 @@ export default function useAuth() {
     const checkUser = async () => {
       try {
         const res = await fetch('/api/user', { credentials: 'include' });
+
+        if (res.status === 401) {
+          setUser(null);
+          return;
+        }
+
         const data = await res.json();
         if (data.success) {
           setUser(data.data);
@@ -24,5 +32,11 @@ export default function useAuth() {
     checkUser();
   }, []);
 
-  return { user, loading, userLoggedIn: !!user, setUser }; 
-}
+  return (
+    <AuthContext.Provider value={{ user, loading, userLoggedIn: !!user, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);

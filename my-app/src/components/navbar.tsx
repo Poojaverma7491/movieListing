@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import apiConfig from '../api/apiConfig';
-import useAuth from '../hooks/useAuth'; // ✅ added
+import { useAuth } from '../hooks/AuthProvider';
 
 interface Genre {
   id: number;
@@ -212,7 +212,7 @@ const Header: React.FC = () => {
                   }}
                 />
               )}
-              <IconButton onClick={() => setSearchOpen((prev) => !prev)} sx={{ color: '#fff' }}>
+              <IconButton aria-label="Search" onClick={() => setSearchOpen((prev) => !prev)} sx={{ color: '#fff' }}>
                 <SearchIcon />
               </IconButton>
             </Box>
@@ -223,6 +223,7 @@ const Header: React.FC = () => {
                 variant={userLoggedIn ? 'outlined' : 'contained'}
                 onClick={userLoggedIn ? handleLogout : () => navigate('/login')}
                 sx={{
+                  borderColor: 'white',
                   textTransform: 'none',
                   backgroundColor: userLoggedIn ? 'transparent' : '#fff',
                   color: userLoggedIn ? '#fff' : '#276b77ff',

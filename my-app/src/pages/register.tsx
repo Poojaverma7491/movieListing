@@ -204,7 +204,7 @@ const Register: React.FC = () => {
           </Stack>
 
           <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
-            <Grid item {...({} as any)}>
+            <Grid>
               <Link component={RouterLink} to="/login" variant="body2" underline="hover" color="#276b77ff">
                 Already have an account? Log In
               </Link>

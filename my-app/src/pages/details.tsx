@@ -38,7 +38,6 @@ const Detail: React.FC = () => {
       if (!safeCategory || !id) return;
       try {
         const response = await tmdbApi.detail(safeCategory, id, { params: {} });
-        console.log("Fetched detail:", response);
         setItem(response);
         window.scrollTo(0, 0);
       } catch (error) {
@@ -63,8 +62,7 @@ const Detail: React.FC = () => {
           px: 10,
           py: 15,
           gap: 4,
-        }}
-      >
+        }}>
         <Box
           sx={{
             flex: 1,
@@ -74,8 +72,7 @@ const Detail: React.FC = () => {
             borderRadius: 2,
             px: 10,
             py: 15,
-          }}
-        />
+          }}/>
 
         <Box
           sx={{
@@ -84,8 +81,7 @@ const Detail: React.FC = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-          }}
-        >
+          }}>
           <Typography variant="h4" fontWeight="bold" gutterBottom>
             {item.title || item.name}
           </Typography>
@@ -95,9 +91,8 @@ const Detail: React.FC = () => {
               <Chip
                 key={genre.id}
                 label={genre.name}
-                sx={{ backgroundColor: '#333', color: '#fff' }}
-              />
-            ))}
+                sx={{ backgroundColor: '#333', color: '#fff' }}/>
+              ))}
           </Box>
 
           <Typography variant="body1" sx={{ opacity: 0.8 }}>

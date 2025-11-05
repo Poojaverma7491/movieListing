@@ -11,7 +11,7 @@ import {
   Button,
 } from '@mui/material';
 import PageHeader from './pageHeader';
-import useAuth from '../hooks/useAuth'; // ✅ added
+import { useAuth } from '../hooks/AuthProvider';
 
 type MovieType = 'popular' | 'top_rated' | 'upcoming';
 type TvType = 'popular' | 'top_rated' | 'upcoming';
@@ -36,7 +36,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
   const { keyword, genreId } = useParams<RouteParams>();
   const [filters, setFilters] = useState<Record<string, any>>({});
   const [sortBy, setSortBy] = useState<string>('');
-  const { userLoggedIn } = useAuth(); // ✅ centralized login check
+  const { userLoggedIn } = useAuth();
 
   const isMovieType = (val: string | undefined): val is MovieType =>
     ['popular', 'top_rated', 'upcoming'].includes(val || '');
@@ -162,7 +162,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
       <MovieSearch onFilterChange={(f) => setFilters(f)} onSortChange={(s) => setSortBy(s)} currentSort={sortBy} />
       <Grid container spacing={4} sx={{ justifyContent: 'center', alignItems: 'center' }}>
         {items.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.id} {...({} as any)}>
+          <Grid key={item.id}>
             <MovieCard category={normalizedCat} item={item} userLoggedIn={userLoggedIn} />
           </Grid>
         ))}
@@ -170,7 +170,15 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
 
       {page < totalPage && (
         <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Button variant="outlined" onClick={loadMore} sx={{ textTransform: 'none' }}>
+          <Button 
+          variant="contained" 
+          onClick={loadMore} 
+          sx={{
+            backgroundColor: '#276b77ff',
+            color: '#fff',
+            textTransform: 'none',
+            '&:hover': { backgroundColor: '#074061ff' },
+          }}>
             Load More
           </Button>
         </Box>

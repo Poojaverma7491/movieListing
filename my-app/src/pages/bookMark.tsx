@@ -11,24 +11,15 @@ import { MediaItem } from "../types/media";
 import SummaryApi from "../common/SummaryAPI";
 import Axios from "../utils/Axios";
 import AxiosToastError from "../utils/AxiosToastError";
+import { useAuth } from "../hooks/AuthProvider";
 
 const BookMark: React.FC = () => {
   const [bookmarked, setBookmarked] = useState<MediaItem[]>([]);
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { user, loading: authLoading, userLoggedIn } = useAuth();
 
   useEffect(() => {
-    const fetchUserAndBookmarks = async () => {
+    const fetchBookmarks = async () => {
       try {
-        const userRes = await Axios.get("/api/user", { withCredentials: true });
-        if (!userRes.data.success || !userRes.data.data) {
-          setUser(null);
-          setLoading(false);
-          return;
-        }
-
-        setUser(userRes.data.data);
-
         const bookmarkRes = await Axios({
           ...SummaryApi.bookmarks,
           withCredentials: true,
@@ -61,17 +52,16 @@ const BookMark: React.FC = () => {
         setBookmarked(movieDetails);
       } catch (err) {
         AxiosToastError(err);
-        setUser(null);
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchUserAndBookmarks();
-  }, []);
+    if (userLoggedIn) {
+      fetchBookmarks();
+    }
+  }, [userLoggedIn]);
 
   const renderContent = () => {
-    if (loading) {
+    if (authLoading) {
       return (
         <Typography sx={{ textAlign: "center", mt: 4, color: "#aaa" }}>
           Loading...
@@ -106,7 +96,7 @@ const BookMark: React.FC = () => {
     if (bookmarked.length === 0) {
       return (
         <Typography variant="body1" sx={{ color: "#aaa", textAlign: "center" }}>
-          You haven’t liked any movies yet.
+          You haven’t bookmarked any movies yet.
         </Typography>
       );
     }
@@ -122,21 +112,8 @@ const BookMark: React.FC = () => {
         }}
       >
         {bookmarked.map((item) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
-            key={item.id}
-            {...({} as any)}
-          >
-            <MovieCard
-              item={item}
-              category={category.movie}
-              likedOverride={true}
-              userLoggedIn={!!user} 
-            />
+          <Grid key={item.id}>
+            <MovieCard item={item} category={category.movie} bookmarkedOverride={true} userLoggedIn={!!user}/>
           </Grid>
         ))}
       </Grid>
@@ -158,7 +135,7 @@ const BookMark: React.FC = () => {
           gutterBottom
           sx={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}
         >
-          Your Liked Movies
+          Your bookmarked Movies
         </Typography>
         {renderContent()}
       </Container>

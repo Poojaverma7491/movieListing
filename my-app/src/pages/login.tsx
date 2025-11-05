@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import {
   Container,
   Box,
@@ -17,8 +17,8 @@ import toast from 'react-hot-toast';
 import SummaryApi from '../common/SummaryAPI';
 import Axios from '../utils/Axios';
 import AxiosToastError from '../utils/AxiosToastError';
-import { auth, googleProvider } from '../firebase';
-import { getRedirectResult, GoogleAuthProvider, signInWithPopup, signInWithRedirect } from 'firebase/auth';
+import { auth } from '../firebase';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 interface FormData {
   email: string;
@@ -71,17 +71,35 @@ const Login: React.FC = () => {
     try {
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({
-        prompt: 'select_account',
+        prompt: "select_account",
       });
 
       const result = await signInWithPopup(auth, provider);
-      console.log('Google user:', result.user);
+      const user = result.user;
 
-      toast.success('Google login successful!');
-      navigate('/home');
+      const payload = {
+        fullName: user.displayName,
+        email: user.email,
+        googleId: user.uid,
+        avatar: user.photoURL,
+      };
+      const response = await Axios({
+        ...SummaryApi.googleLogin,
+        data: payload,
+        withCredentials: true,
+      });
+      if (response.data.error) {
+        toast.error(response.data.message);
+      }
+      if (response.data.success) {
+        toast.success(response.data.message);
+        const redirectTo =
+          new URLSearchParams(location.search).get("redirect") || "/home";
+        navigate(redirectTo);
+      }
     } catch (error: any) {
-      console.error('Google login error:', error);
-      toast.error(error.message || 'Google login failed');
+      console.error("Google login error:", error);
+      AxiosToastError(error);
     }
   };
 
@@ -112,6 +130,7 @@ const Login: React.FC = () => {
               label="Email Address"
               name="email"
               type="email"
+              autoComplete="username"
               required
               fullWidth
               value={formData.email}
@@ -121,6 +140,7 @@ const Login: React.FC = () => {
               label="Password"
               name="password"
               type="password"
+              autoComplete="current-password"
               required
               fullWidth
               value={formData.password}
@@ -170,7 +190,7 @@ const Login: React.FC = () => {
           </Stack>
 
           <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
-            <Grid item {...({} as any)}>
+            <Grid>
               <Link component={RouterLink} to="/register" variant="body2" underline="hover" color="#276b77ff">
                 Don't have an account? Register
               </Link>

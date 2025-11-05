@@ -1,7 +1,8 @@
 import { Toaster } from 'react-hot-toast';
-import { Outlet, useLocation } from 'react-router-dom'; // ✅ added useLocation
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './components/navbar';
 import { Box } from '@mui/material';
+import { AuthProvider } from './hooks/AuthProvider';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -17,9 +18,11 @@ const App: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {!hideHeader && <Header />} 
-      <Outlet />
-      <Toaster />
+      <AuthProvider>
+        {!hideHeader && <Header />} 
+        <Outlet />
+        <Toaster />
+      </AuthProvider>
     </Box>
   );
 };
