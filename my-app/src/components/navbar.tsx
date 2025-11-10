@@ -15,8 +15,10 @@ import {
   InputBase,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import PersonIcon from '@mui/icons-material/PersonAdd';
 import apiConfig from '../api/apiConfig';
 import { useAuth } from '../hooks/AuthProvider';
+import toast from 'react-hot-toast';
 
 interface Genre {
   id: number;
@@ -99,10 +101,12 @@ const Header: React.FC = () => {
       const data = await res.json();
       if (!data.success) {
         setUser(null);
-        navigate('/login');
+        toast.success('You have been logged out.');
+        navigate('/home');
       }
     } catch (err) {
       console.error("Logout failed:", err);
+      toast.error('Logout failed. Please try again.');
     }
   };
 
@@ -112,7 +116,6 @@ const Header: React.FC = () => {
       sx={{
         backgroundColor: '#276b77ff',
         boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-        transition: 'all 0.3s ease',
       }}
     >
       <Container maxWidth="lg">
@@ -162,7 +165,15 @@ const Header: React.FC = () => {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={() => setAnchorEl(null)}
-                PaperProps={{ sx: { maxHeight: 360, minWidth: 200 } }}
+                slotProps={{
+                  paper: {
+                    sx: { 
+                      maxHeight: 360, 
+                      minWidth: 200,
+                      scrollbarWidth: 'none',
+                     },
+                  },
+                }}
               >
                 {loadingGenres && (
                   <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
@@ -232,6 +243,7 @@ const Header: React.FC = () => {
                   },
                 }}
               >
+                <PersonIcon fontSize="small" />
                 {userLoggedIn ? 'Log Out' : 'Log In'}
               </Button>
             </Box>

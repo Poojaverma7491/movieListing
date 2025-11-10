@@ -8,6 +8,7 @@ import {
   Dialog,
   DialogContent,
   Stack,
+  Skeleton,
 } from '@mui/material';
 
 import tmdbApi, { category, movieType } from '../api/tmdbApi';
@@ -29,6 +30,7 @@ interface HeroSlideItemProps {
 const HeroSlide: React.FC = () => {
   const [movieItems, setMovieItems] = useState<MovieItem[]>([]);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -37,6 +39,8 @@ const HeroSlide: React.FC = () => {
         setMovieItems(res.results.slice(0, 10));
       } catch {
         console.error('Failed to fetch hero movies');
+      } finally {
+        setLoading(false);
       }
     };
     fetchMovies();
@@ -44,19 +48,29 @@ const HeroSlide: React.FC = () => {
 
   return (
     <Box>
-      <Swiper
-        modules={[Autoplay]}
-        grabCursor
-        spaceBetween={0}
-        slidesPerView={1}
-        autoplay={{ delay: 4000 }}
-      >
-        {movieItems.map((item) => (
-          <SwiperSlide key={item.id}>
-            <HeroSlideItem item={item} onTrailerOpen={setTrailerKey} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {loading ? (
+        <Box sx={{ maxWidth: 800, textAlign: 'center', mx: 'auto', py: 10 }}>
+          <Skeleton variant="text" width="60%" height={60} sx={{ mx: 'auto', mb: 2, bgcolor: 'grey.800' }} />
+          <Skeleton variant="text" width="80%" height={120} sx={{ mx: 'auto', mb: 2, bgcolor: 'grey.800' }} />
+          <Box sx={{ mt: 4 }}>
+            <Skeleton variant="rectangular" width={200} height={300} sx={{ mx: 'auto', borderRadius: 2, bgcolor: 'grey.800' }} />
+          </Box>
+        </Box>
+      ) : (
+        <Swiper
+          modules={[Autoplay]}
+          grabCursor
+          spaceBetween={0}
+          slidesPerView={1}
+          autoplay={{ delay: 4000 }}
+        >
+          {movieItems.map((item) => (
+            <SwiperSlide key={item.id}>
+              <HeroSlideItem item={item} onTrailerOpen={setTrailerKey} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
 
       <Dialog open={Boolean(trailerKey)} onClose={() => setTrailerKey(null)} maxWidth="md" fullWidth>
         <DialogContent sx={{ p: 0 }}>
@@ -97,17 +111,15 @@ const HeroSlideItem: React.FC<HeroSlideItemProps> = ({ item, onTrailerOpen }) =>
       sx={{
         backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
         height: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#fff',
         p: 15,
       }}
     >
       <Box sx={{maxWidth: 800, textAlign: 'center' }}>
-        <Typography variant="h3" gutterBottom>{item.title}</Typography>
+        <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>{item.title}</Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>{item.overview}</Typography>
         <Stack direction="row" spacing={2} justifyContent="center">
           <Button

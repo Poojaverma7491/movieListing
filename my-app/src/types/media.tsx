@@ -1,4 +1,5 @@
 export interface MediaItem {
+  type: string;
   data: MediaItem;
   id: number;
   title?: string;

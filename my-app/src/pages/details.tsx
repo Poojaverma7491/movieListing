@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Typography, Chip } from '@mui/material';
+import { Box, Typography, Chip, Skeleton, Stack } from '@mui/material';
 import tmdbApi from '../api/tmdbApi';
 import apiConfig from '../api/apiConfig';
 import MovieList from './movieList';
@@ -28,6 +28,7 @@ interface RouteParams extends Record<string, string | undefined> {
 const Detail: React.FC = () => {
   const { category, id } = useParams<RouteParams>();
   const [item, setItem] = useState<MediaDetail | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Narrow category to "movie" | "tv"
   const isValidCategory = category === 'movie' || category === 'tv';
@@ -37,11 +38,14 @@ const Detail: React.FC = () => {
     const getDetail = async () => {
       if (!safeCategory || !id) return;
       try {
+        setLoading(true);
         const response = await tmdbApi.detail(safeCategory, id, { params: {} });
         setItem(response);
         window.scrollTo(0, 0);
       } catch (error) {
         console.error('Failed to fetch detail:', error);
+      }finally {
+        setLoading(false); 
       }
     };
     getDetail();
@@ -49,10 +53,42 @@ const Detail: React.FC = () => {
 
   }, [safeCategory, id]);
 
-  if (!item || !safeCategory) return null;
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: '#000', color: '#fff' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            px: 10,
+            py: 15,
+            gap: 4,
+          }}
+        >
+          <Skeleton variant="rectangular" width="100%" height={300} sx={{ flex: 1, borderRadius: 2, bgcolor: 'grey.800'}} />
+          <Stack spacing={2} sx={{ flex: 1 }}>
+            <Skeleton variant="text" width="60%" height={40} sx={{bgcolor: 'grey.800'}} />
+            <Skeleton variant="rounded" width="40%" height={30} sx={{bgcolor: 'grey.800'}} />
+            <Skeleton variant="text" width="80%" height={20} sx={{bgcolor: 'grey.800'}} />
+            <Skeleton variant="text" width="90%" height={20} sx={{bgcolor: 'grey.800'}} />
+            <Skeleton variant="text" width="70%" height={20} sx={{bgcolor: 'grey.800'}} />
+          </Stack>
+        </Box>
+      </Box>
+    );
+  }
+  
+  if (!item || !safeCategory) {
+    return (
+      <Box sx={{ backgroundColor: '#000', color: '#fff', py: 10, textAlign: 'center' }}>
+        <Typography variant="h6" color="text.secondary">
+          Sorry, we couldn’t find the details for this item.
+        </Typography>
+      </Box>
+    );
+  }
 
   const poster = apiConfig.originalImage(item.poster_path || item.backdrop_path || '');
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: '#000', color: '#fff' }}>
       <Box

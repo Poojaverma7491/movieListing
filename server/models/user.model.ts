@@ -14,14 +14,6 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : [true, "provide password"]
     },
-    avatar : {
-        type : String,
-        default : ""
-    },
-    mobile : {
-        type : Number,
-        default : null
-    },
     refresh_token : {
         type : String,
         default : ""

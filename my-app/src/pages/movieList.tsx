@@ -12,6 +12,7 @@ import tmdbApi, { category } from '../api/tmdbApi';
 import axios from 'axios';
 import apiConfig from '../api/apiConfig';
 import { MediaItem } from '../types/media'; 
+import MovieCardSkeleton from '../components/movieCardSkeleton';
 
 interface MovieListProps {
   category: keyof typeof category;
@@ -24,11 +25,13 @@ interface MovieListProps {
 const MovieList: React.FC<MovieListProps> = ({ category: cat, type, id, genreId, userLoggedIn = false }) => {
   const [items, setItems] = useState<MediaItem[]>([]);
   const swiperRef = useRef<SwiperType | null>(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const controller = new AbortController();
 
     const fetchList = async () => {
       try {
+        setLoading(true);
         let response: any = null;
 
         if (genreId) {
@@ -73,6 +76,8 @@ const MovieList: React.FC<MovieListProps> = ({ category: cat, type, id, genreId,
         if (name !== 'CanceledError' && name !== 'AbortError') {
           console.error('MovieList fetch error:', error);
         }
+      } finally {
+        setLoading(false); 
       }
     };
 
@@ -95,11 +100,23 @@ const MovieList: React.FC<MovieListProps> = ({ category: cat, type, id, genreId,
         spaceBetween={10}
         slidesPerView="auto"
       >
-        {items.map((item) => (
-          <SwiperSlide key={item.id} style={{ width: 220 }}>
-            <MovieCard item={item} category={cat} userLoggedIn={userLoggedIn} /> 
-          </SwiperSlide>
-        ))}
+        {loading ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <SwiperSlide key={`skeleton-${i}`} style={{ width: 220 }}>
+              <MovieCardSkeleton />
+            </SwiperSlide>
+          ))
+        ) : items.length > 0 ? (
+          items.map((item) => (
+            <SwiperSlide key={item.id} style={{ width: 220 }}>
+              <MovieCard item={item} category={cat} userLoggedIn={userLoggedIn} />
+            </SwiperSlide>
+          ))
+        ) : (
+          <Box sx={{ width: '100%', textAlign: 'center', py: 4 }}>
+            No data found.
+          </Box>
+        )}
       </Swiper>
 
       <IconButton

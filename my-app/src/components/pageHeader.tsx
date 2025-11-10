@@ -17,9 +17,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ children }) => {
       <Typography
         fontWeight="bold"
         color="white"
-        variant="h3"
+        variant="h4"
         padding={4}
-        sx={{ textTransform: 'uppercase'}}
       >
         {children}
       </Typography>

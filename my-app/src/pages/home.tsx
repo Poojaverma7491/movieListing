@@ -23,7 +23,7 @@ const Section: React.FC<SectionProps> = ({ title, linkTo, children }) => (
         sx={{
           textTransform: 'none',
           backgroundColor: '#276b77ff',
-          '&:hover': { backgroundColor: '#fff' },
+          '&:hover': { backgroundColor: '#555555ff' },
         }}
       >
         View more

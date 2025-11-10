@@ -9,9 +9,11 @@ import {
   Box,
   Container,
   Button,
+  Typography,
 } from '@mui/material';
 import PageHeader from './pageHeader';
 import { useAuth } from '../hooks/AuthProvider';
+import MovieCardSkeleton from './movieCardSkeleton';
 
 type MovieType = 'popular' | 'top_rated' | 'upcoming';
 type TvType = 'popular' | 'top_rated' | 'upcoming';
@@ -37,6 +39,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
   const [filters, setFilters] = useState<Record<string, any>>({});
   const [sortBy, setSortBy] = useState<string>('');
   const { userLoggedIn } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   const isMovieType = (val: string | undefined): val is MovieType =>
     ['popular', 'top_rated', 'upcoming'].includes(val || '');
@@ -54,6 +57,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
 
   useEffect(() => {
     setPage(1);
+    setLoading(true);
   }, [keyword, genreId, filters, sortBy, normalizedCat, finalTvType, finalMovieType]);
 
   useEffect(() => {
@@ -88,6 +92,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
 
         setItems(response?.results || []);
         setTotalPage(response?.total_pages || 0);
+        setLoading(false);
       } catch (error) {
         console.error('fetchList error', error);
         setItems([]);
@@ -159,13 +164,28 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
   return (
     <Container maxWidth="lg" sx={{ mt: 10 }}>
       <PageHeader>{getHeading()}</PageHeader>
-      <MovieSearch onFilterChange={(f) => setFilters(f)} onSortChange={(s) => setSortBy(s)} currentSort={sortBy} />
+      {items.length > 0 && (
+        <MovieSearch onFilterChange={(f) => setFilters(f)} onSortChange={(s) => setSortBy(s)} currentSort={sortBy} />
+      )}
       <Grid container spacing={4} sx={{ justifyContent: 'center', alignItems: 'center' }}>
-        {items.map((item) => (
-          <Grid key={item.id}>
-            <MovieCard category={normalizedCat} item={item} userLoggedIn={userLoggedIn} />
-          </Grid>
-        ))}
+        {loading
+        ? Array.from({ length: 10 }).map((_, index) => (
+            <Grid key={index}>
+              <MovieCardSkeleton />
+            </Grid>
+          )) : items.length === 0 ? (
+            <Box sx={{ textAlign: 'center', mt: 4 }}>
+              <Typography variant="h6" color="white">
+                No results found!!!
+              </Typography>
+            </Box>
+          ): (
+          items.map((item) => (
+            <Grid key={item.id}>
+              <MovieCard category={normalizedCat} item={item} userLoggedIn={userLoggedIn} />
+            </Grid>
+          ))
+        )}
       </Grid>
 
       {page < totalPage && (
@@ -183,6 +203,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
           </Button>
         </Box>
       )}
+      
     </Container>
   );
 };

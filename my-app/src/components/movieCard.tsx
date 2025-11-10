@@ -61,7 +61,6 @@ const MovieCard: React.FC<MovieCardProps> = ({
     e.preventDefault();
     if (!userLoggedIn) {
       toast('Please log in to bookmark movies.', {
-        icon: '🔒',
         style: {
           background: '#333',
           color: '#fff',
@@ -88,7 +87,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
     const description = item.overview || 'No description available.';
     const releaseDate = item.release_date || item.first_air_date || 'Unknown release date';
 
-    const shareText = `🎬 ${title}\n🗓️ Release Date: ${releaseDate}\n📝 Description: ${description}`;
+    const shareText = `${title}\n Release Date: ${releaseDate}\n Description: ${description}`;
     navigator.clipboard.writeText(shareText);
     if (navigator.share) {
       navigator.share({
@@ -110,7 +109,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
         backgroundColor: "#276b77ff",
         overflow: "hidden",
         position: "relative",
-        width: 200,
+        width: 185,
         "&:hover .play-button": {
           opacity: 1,
         },

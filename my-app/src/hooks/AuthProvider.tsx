@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+
     const checkUser = async () => {
       try {
         const res = await fetch('/api/user', { credentials: 'include' });
@@ -29,11 +29,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
+
+  useEffect(() => {
     checkUser();
   }, []);
-
+  
   return (
-    <AuthContext.Provider value={{ user, loading, userLoggedIn: !!user, setUser }}>
+    <AuthContext.Provider value={{ user, loading, userLoggedIn: !!user, checkUser, setUser }}>
       {children}
     </AuthContext.Provider>
   );

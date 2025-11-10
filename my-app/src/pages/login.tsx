@@ -19,6 +19,7 @@ import Axios from '../utils/Axios';
 import AxiosToastError from '../utils/AxiosToastError';
 import { auth } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useAuth } from '../hooks/AuthProvider';
 
 interface FormData {
   email: string;
@@ -42,7 +43,7 @@ const Login: React.FC = () => {
   };
 
   const valideValue = Object.values(formData).every((el) => el);
-
+  const { checkUser } = useAuth();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -59,6 +60,7 @@ const Login: React.FC = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         setFormData({ email: '', password: '' });
+        await checkUser();
         const redirectTo = new URLSearchParams(location.search).get('redirect') || '/home';
         navigate(redirectTo);
       }
@@ -93,8 +95,8 @@ const Login: React.FC = () => {
       }
       if (response.data.success) {
         toast.success(response.data.message);
-        const redirectTo =
-          new URLSearchParams(location.search).get("redirect") || "/home";
+        await checkUser();
+        const redirectTo = new URLSearchParams(location.search).get("redirect") || "/home";
         navigate(redirectTo);
       }
     } catch (error: any) {
