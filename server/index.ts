@@ -1,7 +1,5 @@
 import express from 'express'
 import cors from 'cors'
-import dotenv from 'dotenv'
-dotenv.config()
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import helmet from 'helmet'
@@ -10,6 +8,8 @@ import userRouter from './routes/user.route.ts'
 import bookmarkRouter from './routes/bookmark.route.ts'
 import { logoutController } from './controllers/user.controller.ts'
 import auth from './middleware/auth.ts'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const app = express()
 app.use(cors({
@@ -30,12 +30,12 @@ app.get('/api/logout', auth, logoutController);
 
 app.get("/",(request,response)=>{
     response.json({
-        message : "Server is running " + PORT
+        message : "Server is running at" + PORT
     })
 })    
 
 connectDB().then(()=>{
     app.listen(PORT,()=>{
-        console.log("Server is running",PORT)
+        console.log("Server is running at",PORT)
     })
 })

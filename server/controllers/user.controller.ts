@@ -12,17 +12,13 @@ export interface AuthenticatedRequest extends Request {
 }
 
 // Register
-export async function registerUserController(
-  req: Request,
-  res: Response
-): Promise<Response> {
+export async function registerUserController( req: Request, res: Response ): Promise<Response> {
   try {
     const { fullName, email, password } = req.body;
 
     if (!fullName || !email || !password) {
       return res.status(400).json({
         message: 'Provide email, fullName, password',
-        error: true,
         success: false,
       });
     }
@@ -32,7 +28,6 @@ export async function registerUserController(
     if (user) {
       return res.status(409).json({
         message: 'Email already registered',
-        error: true,
         success: false,
       });
     }
@@ -53,24 +48,19 @@ export async function registerUserController(
 
     return res.status(201).json({
       message: 'User registered successfully',
-      error: false,
       success: true,
       data: savedUser,
     });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message || 'Internal server error',
-      error: true,
       success: false,
     });
   }
 }
 
 // Verify Email
-export async function verifyEmailController(
-  req: Request,
-  res: Response
-): Promise<Response> {
+export async function verifyEmailController( req: Request, res: Response ): Promise<Response> {
   try {
     const { code } = req.body;
 
@@ -78,7 +68,6 @@ export async function verifyEmailController(
     if (!user) {
       return res.status(400).json({
         message: 'Invalid code',
-        error: true,
         success: false,
       });
     }
@@ -88,29 +77,23 @@ export async function verifyEmailController(
     return res.json({
       message: 'Email verified',
       success: true,
-      error: false,
     });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message || 'Internal server error',
-      error: true,
       success: false,
     });
   }
 }
 
 // Login
-export async function loginController(
-    req: Request,
-    res: Response
-): Promise<Response>{
+export async function loginController( req: Request, res: Response ): Promise<Response>{
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
         message: "provide email, password",
-        error: true,
         success: false,
       });
     }
@@ -120,15 +103,6 @@ export async function loginController(
     if (!user) {
       return res.status(400).json({
         message: "User not register",
-        error: true,
-        success: false,
-      });
-    }
-
-    if (user.status !== "Active") {
-      return res.status(400).json({
-        message: "Contact to Admin",
-        error: true,
         success: false,
       });
     }
@@ -138,7 +112,6 @@ export async function loginController(
     if (!checkPassword) {
       return res.status(400).json({
         message: "Check your password",
-        error: true,
         success: false,
       });
     }
@@ -161,7 +134,6 @@ export async function loginController(
 
     return res.json({
       message: "Login successfully",
-      error: false,
       success: true,
       data: {
         accesstoken,
@@ -170,80 +142,67 @@ export async function loginController(
     });
   } catch (error : any) {
     return res.status(500).json({
-      message: error.message || error,
-      error: true,
+      message: error.message,
       success: false,
     });
   }
 }
 
 // Logout
-export async function logoutController(
-  request: AuthenticatedRequest,
-  response: Response
-): Promise<Response> {
+export async function logoutController( req: AuthenticatedRequest, res: Response ): Promise<Response> {
   try {
-    const userid = request.userId;
+    const userid = req.userId;
 
     if (!userid) {
-      return response.status(400).json({
+      return res.status(400).json({
         message: 'Missing user ID from middleware.',
-        error: true,
         success: false,
       });
     }
 
-    // ✅ Match cookie clearing options exactly with login
     const cookiesOption: CookieOptions = {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      path: '/', // ✅ Add this to ensure proper clearing
+      path: '/', 
     };
 
-    response.clearCookie('accessToken', cookiesOption);
-    response.clearCookie('refreshToken', cookiesOption);
+    res.clearCookie('accessToken', cookiesOption);
+    res.clearCookie('refreshToken', cookiesOption);
 
     await UserModel.findByIdAndUpdate(userid, {
       refresh_token: '',
     });
 
-    return response.json({
+    return res.json({
       message: 'Logout successfully',
-      error: false,
       success: true,
     });
-  } catch (error: unknown) {
-    const err = error instanceof Error ? error.message : String(error);
-    return response.status(500).json({
-      message: err,
-      error: true,
+  } catch (error: any) {
+     return res.status(500).json({
+      message: error.message,
       success: false,
     });
   }
 }
 
-
 // Check User
-export async function getLoggedInUserController(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> {
+export async function getLoggedInUserController( req: AuthenticatedRequest, res: Response ): Promise<Response> {
   try {
     const userId = req.userId;
 
     if (!userId) {
       return res.status(401).json({
-        success: false,
         message: 'Unauthorized',
+        success: false,
       });
     }
 
     const user = await UserModel.findById(userId).select('-password');
     if (!user) {
       return res.status(404).json({
-        success: false,
         message: 'User not found',
+        success: false,
       });
     }
 
@@ -253,25 +212,20 @@ export async function getLoggedInUserController(
     });
   } catch (error: any) {
     return res.status(500).json({
-      success: false,
       message: error.message || 'Internal server error',
+      success: false,
     });
   }
 }
 
 //Google OAth
-
-export async function googleOAuthCallbackController(
-  req: AuthenticatedRequest, 
-  res: Response
-): Promise<Response> {
+export async function googleOAuthCallbackController( req: AuthenticatedRequest,  res: Response ): Promise<Response> {
   try {
     const { fullName, email, googleId, avatar } = req.body;
 
     if (!email || !googleId) {
       return res.status(400).json({
         message: 'Missing Google user info',
-        error: true,
         success: false,
       });
     }
@@ -282,7 +236,6 @@ export async function googleOAuthCallbackController(
       user = new UserModel({
         fullName,
         email,
-        avatar,
         verify_email: true,
         status: 'Active',
         refresh_token: googleId,
@@ -310,7 +263,6 @@ export async function googleOAuthCallbackController(
 
     return res.json({
       message: 'Google login successful',
-      error: false,
       success: true,
       data: {
         accesstoken,
@@ -320,7 +272,6 @@ export async function googleOAuthCallbackController(
   } catch (error: any) {
     return res.status(500).json({
       message: error.message || 'Internal server error',
-      error: true,
       success: false,
     });
   }

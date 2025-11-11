@@ -5,37 +5,45 @@ interface AuthenticatedRequest extends Request {
   userId?: string
 }
 
-export const getBookmarks = async (req: Request, res: Response) => {
-  const request = req as AuthenticatedRequest
+export const getBookmarks = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const bookmark = await BookmarkModel.findOne({ userId: request.userId })
+    const bookmark = await BookmarkModel.findOne({ userId: req.userId })
     const movieIds = bookmark?.movieIds ?? []
-    res.json({ success: true, data: movieIds })
+    res.json({ 
+      success: true, 
+      data: movieIds 
+    })
   } catch (err) {
-    console.error('Error fetching bookmarks:', err)
-    res.status(500).json({ success: false, message: 'Failed to fetch bookmarks' })
+    res.status(500).json({ 
+      message: 'Failed to fetch bookmarks',
+      success: false 
+    })
   }
 }
 
-export const addBookmark = async (req: Request, res: Response) => {
-  const request = req as AuthenticatedRequest
+export const addBookmark = async (req: AuthenticatedRequest, res: Response) => {
   const { movieId } = req.body
 
   if (!movieId || typeof movieId !== 'number') {
-    return res.status(400).json({ success: false, message: 'Invalid movieId' })
+    return res.status(400).json({ 
+      message: 'Invalid movieId',
+      success: false 
+    })
   }
 
   try {
     const bookmark = await BookmarkModel.findOneAndUpdate(
-      { userId: request.userId },
+      { userId: req.userId },
       { $addToSet: { movieIds: movieId } },
       { upsert: true, new: true }
     )
     const movieIds = bookmark?.movieIds ?? []
     res.json({ success: true, data: movieIds })
   } catch (err) {
-    console.error('Error adding bookmark:', err)
-    res.status(500).json({ success: false, message: 'Failed to add bookmark' })
+    res.status(500).json({ 
+      message: 'Failed to add bookmark',
+      success: false 
+    })
   }
 }
 
@@ -44,7 +52,10 @@ export const removeBookmark = async (req: Request, res: Response) => {
   const { movieId } = req.body
 
   if (!movieId || typeof movieId !== 'number') {
-    return res.status(400).json({ success: false, message: 'Invalid movieId' })
+    return res.status(400).json({ 
+      message: 'Invalid movieId',
+      success: false 
+    })
   }
 
   try {
@@ -54,9 +65,14 @@ export const removeBookmark = async (req: Request, res: Response) => {
       { new: true }
     )
     const movieIds = bookmark?.movieIds ?? []
-    res.json({ success: true, data: movieIds })
+    res.json({
+       success: true, 
+       data: movieIds 
+      })
   } catch (err) {
-    console.error('Error removing bookmark:', err)
-    res.status(500).json({ success: false, message: 'Failed to remove bookmark' })
+    res.status(500).json({ 
+      message: 'Failed to remove bookmark',
+      success: false 
+    })
   }
 }

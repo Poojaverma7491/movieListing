@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Container } from "@mui/material";
-import MovieGrid from "../components/movieGrid";
-import { category as cate } from "../api/tmdbApi";
+import MovieGrid from "../Components/MovieGrid";
+import { category as cate } from "../ApiTmdb/tmdbApi";
 
 interface RouteParams {
   category?: string;

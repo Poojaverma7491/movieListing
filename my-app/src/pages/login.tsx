@@ -14,12 +14,12 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import SummaryApi from '../common/SummaryAPI';
-import Axios from '../utils/Axios';
-import AxiosToastError from '../utils/AxiosToastError';
+import SummaryApi from '../ApiBackend/SummaryAPI';
+import Axios from '../Utils/Axios';
+import AxiosToastError from '../Utils/AxiosToastError';
 import { auth } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { useAuth } from '../hooks/AuthProvider';
+import { useAuth } from '../Hooks/AuthProvider';
 
 interface FormData {
   email: string;
@@ -126,7 +126,7 @@ const Login: React.FC = () => {
           Login
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', mt: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', mt: 2}}>
           <Stack spacing={2}>
             <TextField
               label="Email Address"
@@ -157,6 +157,10 @@ const Login: React.FC = () => {
                 backgroundColor: '#276b77ff',
                 color: '#fff',
                 textTransform: 'none',
+                paddingY: 1.2,
+                paddingX: 2,
+                fontWeight: 'bold',
+                fontSize: '16px',
                 '&:hover': { backgroundColor: '#074061ff' },
               }}
             >

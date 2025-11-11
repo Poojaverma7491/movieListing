@@ -1,5 +1,6 @@
-import { MediaItem } from "../types/media";
-import axiosClient from "../utils/axiosClient";
+
+import { MediaItem } from "../Interfaces/media";
+import axiosClient from "../Utils/axiosClient";
 
 export const category = {
   movie: "movie",
@@ -49,15 +50,11 @@ const tmdbApi = {
     return axiosClient.get(url, { params });
   },
 
-  // detail: (cate: Category, id: string | number, { params }: RequestParams) => {
-  //   const url = `${category[cate]}/${id}`;
-  //   return axiosClient.get(url, { params });
-  // },
   detail: async (cate: Category, id: string | number, { params }: RequestParams): Promise<MediaItem> => {
-  const url = `${category[cate]}/${id}`;
-  const res = await axiosClient.get(url, { params });
-  return res as unknown as MediaItem;
-},
+    const url = `${category[cate]}/${id}`;
+    const res = await axiosClient.get(url, { params });
+    return res as unknown as MediaItem;
+  },
 
   credits: (cate: Category, id: string | number) => {
     const url = `${category[cate]}/${id}/credits`;

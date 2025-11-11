@@ -22,10 +22,6 @@ const userSchema = new mongoose.Schema({
         type : Boolean,
         default : false
     },
-    last_login_date : {
-        type : Date,
-        default : ""
-    },
     status : {
         type : String,
         enum : ["Active","Inactive","Suspended"],

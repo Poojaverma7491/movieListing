@@ -11,8 +11,9 @@ import {
   Skeleton,
 } from '@mui/material';
 
-import tmdbApi, { category, movieType } from '../api/tmdbApi';
-import apiConfig from '../api/apiConfig';
+import tmdbApi, { category, movieType } from '../ApiTmdb/tmdbApi';
+import apiConfig from '../ApiTmdb/apiConfig';
+import AppButton from './Button';
 
 interface MovieItem {
   id: number;
@@ -49,11 +50,11 @@ const HeroSlide: React.FC = () => {
   return (
     <Box>
       {loading ? (
-        <Box sx={{ maxWidth: 800, textAlign: 'center', mx: 'auto', py: 10 }}>
-          <Skeleton variant="text" width="60%" height={60} sx={{ mx: 'auto', mb: 2, bgcolor: 'grey.800' }} />
-          <Skeleton variant="text" width="80%" height={120} sx={{ mx: 'auto', mb: 2, bgcolor: 'grey.800' }} />
+        <Box sx={{ maxWidth: '90%', textAlign: 'center', mx: 'auto', py: 10,  bgcolor: 'grey.800' }}>
+          <Skeleton variant="text" width="60%" height={60} sx={{ mx: 'auto', mb: 2, bgcolor: 'grey.700' }} />
+          <Skeleton variant="text" width="80%" height={120} sx={{ mx: 'auto', mb: 2, bgcolor: 'grey.700' }} />
           <Box sx={{ mt: 4 }}>
-            <Skeleton variant="rectangular" width={200} height={300} sx={{ mx: 'auto', borderRadius: 2, bgcolor: 'grey.800' }} />
+            <Skeleton variant="rectangular" width={200} height={300} sx={{ mx: 'auto', borderRadius: 2, bgcolor: 'grey.700' }} />
           </Box>
         </Box>
       ) : (
@@ -111,36 +112,56 @@ const HeroSlideItem: React.FC<HeroSlideItemProps> = ({ item, onTrailerOpen }) =>
       sx={{
         backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
-        height: '80vh',
+        height: { xs: '30vh', sm: '50vh', md: '80vh' },
+        p: { xs: '45px', sm: '55px', md: '65px' },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        p: 15,
-      }}
-    >
-      <Box sx={{maxWidth: 800, textAlign: 'center' }}>
-        <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>{item.title}</Typography>
-        <Typography variant="body1" sx={{ mb: 3 }}>{item.overview}</Typography>
-        <Stack direction="row" spacing={2} justifyContent="center">
-          <Button
-            variant="contained"
-            onClick={handleWatchTrailer}
-            sx={{
-              backgroundColor: '#276b77ff',
-              color: '#fff',
-              '&:hover': { backgroundColor: '#074061ff' },
-              textTransform: 'none',
-            }}
-          >
+      }}>
+      <Box 
+        sx={{
+          textAlign: 'center', 
+          height: { xs: '30vh', sm: '50vh', md: '80vh' },
+          display: 'flex',  
+          flexDirection: 'column',  
+          alignItems: 'center',    
+          justifyContent: 'center', 
+        }}>
+        <Typography 
+        variant="h4" 
+        gutterBottom 
+        sx={{
+          fontWeight: 'bold',
+          fontSize: { xs: '1.2rem', sm: '1.5rem', md: '2rem', lg: '2.5rem' }
+        }}>
+          {item.title}
+        </Typography>
+        
+        <Typography 
+        gutterBottom
+        sx={{
+          display: { xs: '-webkit-box', sm: 'block' },
+          WebkitLineClamp: { xs: 3, sm: 'unset' },
+          WebkitBoxOrient: { xs: 'vertical', sm: 'unset' },
+          overflow: { xs: 'hidden', sm: 'visible' },
+          textOverflow: { xs: 'ellipsis', sm: 'unset' },
+        }}>
+          {item.overview}
+        </Typography>
+
+        <Stack 
+          alignItems="center">
+          <AppButton onClick={handleWatchTrailer}>
             Watch Trailer
-          </Button>
+          </AppButton>
         </Stack>
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ mt: 4, display: { xs: 'none', sm: 'none', md: 'block' } }}>
           <img
             src={apiConfig.w500Image(item.poster_path || '')}
             alt={item.title}
-            style={{ width: '200px', borderRadius: '8px' }}
-          />
+            style={{ width: '100%',
+            maxWidth: '200px', 
+            borderRadius: '8px', }}/>
         </Box>
       </Box>
     </Box>

@@ -1,16 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/home";
-import Register from "../pages/register";
-import Login from "../pages/login";
-import MovieGrid from "../components/movieGrid";
-import Detail from "../pages/details";
-import BookMark from "../pages/bookMark";
+import Home from "../Pages/home";
+import Register from "../Pages/register";
+import Login from "../Pages/login";
+import Detail from "../Pages/details";
+import BookMark from "../Pages/bookMark";
 import App from "../App";
+import MovieGrid from "../Components/MovieGrid";
 const AllRoutes = createBrowserRouter([
     {
         path : "/",
         element : <App/>,
         children : [
+            {
+                index: true, 
+                element: <Home />
+            },
             {
                 path : "home",
                 element : <Home/>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Chip, Skeleton, Stack } from '@mui/material';
-import tmdbApi from '../api/tmdbApi';
-import apiConfig from '../api/apiConfig';
+import tmdbApi from '../ApiTmdb/tmdbApi';
+import apiConfig from '../ApiTmdb/apiConfig';
 import MovieList from './movieList';
 
 interface Genre {

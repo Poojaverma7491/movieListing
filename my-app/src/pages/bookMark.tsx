@@ -5,14 +5,14 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
-import MovieCard from "../components/movieCard";
-import tmdbApi, { category } from "../api/tmdbApi";
-import { MediaItem } from "../types/media";
-import SummaryApi from "../common/SummaryAPI";
-import Axios from "../utils/Axios";
-import AxiosToastError from "../utils/AxiosToastError";
-import { useAuth } from "../hooks/AuthProvider";
-import MovieCardSkeleton from "../components/movieCardSkeleton";
+import MovieCard from "../Components/MovieCard";
+import tmdbApi, { category } from "../ApiTmdb/tmdbApi";
+import { MediaItem } from "../Interfaces/media";
+import SummaryApi from "../ApiBackend/SummaryAPI";
+import Axios from "../Utils/Axios";
+import AxiosToastError from "../Utils/AxiosToastError";
+import { useAuth } from "../Hooks/AuthProvider";
+import MovieCardSkeleton from "../Components/MovieCardSkeleton";
 
 const BookMark: React.FC = () => {
   const [bookmarked, setBookmarked] = useState<MediaItem[]>([]);
@@ -120,7 +120,7 @@ const BookMark: React.FC = () => {
     }
 
     return (
-      <Grid container spacing={4.5} sx={{ mt: 2 }}>
+      <Grid container maxWidth="lg" spacing={4.5} sx={{ mt: 2 }}>
         {bookmarked.map((item) => (
           <Grid key={item.id} >
             <MovieCard
@@ -157,6 +157,7 @@ const BookMark: React.FC = () => {
           <Button
             variant={activeType === "movie" ? "contained" : "outlined"}
             onClick={movies}
+            disabled={bookmarked.length === 0}
             sx={{
               borderColor: "#276b77ff",
               color: "#fff",
@@ -172,6 +173,7 @@ const BookMark: React.FC = () => {
           <Button
             variant={activeType === "tv" ? "contained" : "outlined"}
             onClick={tvShows}
+            disabled={bookmarked.length === 0}
             sx={{
               borderColor: "#6a8085ff",
               color:"#fff",

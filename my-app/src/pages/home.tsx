@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import {Box, Button, Container, Typography} from '@mui/material';
-import HeroSlide from '../components/heroSlide';
-import MovieList from '../pages/movieList';
-import { category, movieType, tvType } from '../api/tmdbApi';
+import HeroSlide from '../Components/HeroSlide';
+import MovieList from './movieList';
+import { category, movieType, tvType } from '../ApiTmdb/tmdbApi';
 import { ReactNode } from 'react';
+import AppButton from '../Components/Button';
 
 interface SectionProps {
   title: string;
@@ -12,32 +13,34 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ title, linkTo, children }) => (
-  <Box sx={{ mb: 6 }}>
+  <Box>
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-      <Typography variant="h5" fontWeight="bold">{title}</Typography>
-      <Button
-        component={Link}
-        to={linkTo}
-        variant="contained"
-        size="small"
+      <Typography
+        variant="h5"
         sx={{
-          textTransform: 'none',
-          backgroundColor: '#276b77ff',
-          '&:hover': { backgroundColor: '#555555ff' },
+          fontWeight: 'bold',
+          fontSize: { xs: '1rem', sm: '1.5rem', md: '1.7rem', lg: '2rem' }, 
         }}
       >
+        {title}
+      </Typography>
+      <AppButton component={Link}
+        to={linkTo}>
         View more
-      </Button>
+      </AppButton>
     </Box>
     {children}
   </Box>
 );
 
 const Home: React.FC = () => (
-  <Box>
-    <HeroSlide />
-
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container sx={{    
+      display: 'flex',
+      flexDirection: 'column',
+      gap: { xs: 4, sm: 5, md: 6 },      
+      color: '#fff'     
+    }}>
+      <HeroSlide />
       <Section title="Trending Movies" linkTo={`/home/movie/search/popular`}>
         <MovieList category={category.movie} type={movieType.popular} />
       </Section>
@@ -54,7 +57,6 @@ const Home: React.FC = () => (
         <MovieList category={category.tv} type={tvType.top_rated} />
       </Section>
     </Container>
-  </Box>
 );
 
 export default Home;

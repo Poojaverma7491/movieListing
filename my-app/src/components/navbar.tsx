@@ -16,15 +16,15 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/PersonAdd';
-import apiConfig from '../api/apiConfig';
-import { useAuth } from '../hooks/AuthProvider';
+import apiConfig from '../ApiTmdb/apiConfig';
+import { useAuth } from '../Hooks/AuthProvider';
 import toast from 'react-hot-toast';
 
 interface Genre {
   id: number;
   name: string;
 }
-
+const drawerWidth = 240;
 const headerNav = [
   { display: 'Home', path: `/home` },
   { display: 'Movies', path: `/home/movie` },
@@ -115,7 +115,7 @@ const Header: React.FC = () => {
       position="fixed"
       sx={{
         backgroundColor: '#276b77ff',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        height: { xs: '45px', sm: '55px', md: '65px' },
       }}
     >
       <Container maxWidth="lg">
@@ -229,7 +229,7 @@ const Header: React.FC = () => {
             </Box>
 
             {/* Auth Status */}
-            <Box sx={{ ml: 2 }}>
+            <Box sx={{ ml: 2, display: { xs: 'none', md: 'block', lg: 'block' }}} >
               <Button
                 variant={userLoggedIn ? 'outlined' : 'contained'}
                 onClick={userLoggedIn ? handleLogout : () => navigate('/login')}

@@ -4,14 +4,14 @@ dotenv.config()
 
 if(!process.env.MONGODB_URI){
     throw new Error(
-        "Please provide MONGODB_URI in the .env file"
+        "Please provide MONGODB_URI"
     )
 }
 
 async function connectDB(){
     try {
         await mongoose.connect(process.env.MONGODB_URI!)
-        console.log("connect DB")
+        console.log("DB Connected")
     } catch (error) {
         console.log("Mongodb connect error",error)
         process.exit(1)

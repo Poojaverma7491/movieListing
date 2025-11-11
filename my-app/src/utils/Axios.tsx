@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseURL } from "../common/SummaryAPI";
+import { baseURL } from "../ApiBackend/SummaryAPI";
 
 const Axios = axios.create({
     baseURL : baseURL,

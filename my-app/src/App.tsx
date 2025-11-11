@@ -1,9 +1,9 @@
 import { Toaster } from 'react-hot-toast';
 import { Outlet, useLocation } from 'react-router-dom';
-import Header from './components/navbar';
+import Header from './Components/Navbar';
 import { Box } from '@mui/material';
-import { AuthProvider } from './hooks/AuthProvider';
-import Footer from './components/footer';
+import { AuthProvider } from './Hooks/AuthProvider';
+import Footer from './Components/Footer';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -15,15 +15,11 @@ const App: React.FC = () => {
         maxWidth: '100%',
         minHeight: '100vh',
         backgroundColor: '#000',
-        color: '#fff',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
       }}
     >
       <AuthProvider>
         {!hideHeader && <Header />} 
-        <Box component="main" sx={{ flex: 1 }}>
+        <Box >
           <Outlet />
         </Box>
         <Toaster />

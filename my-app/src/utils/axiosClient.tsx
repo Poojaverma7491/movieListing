@@ -3,7 +3,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import queryString from "query-string";
-import apiConfig from "../api/apiConfig";
+import apiConfig from "../ApiTmdb/apiConfig";
 
 const axiosClient = axios.create({
   baseURL: apiConfig.baseUrl,

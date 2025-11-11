@@ -15,9 +15,9 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import SummaryApi from '../common/SummaryAPI';
-import Axios from '../utils/Axios';
-import AxiosToastError from '../utils/AxiosToastError';
+import SummaryApi from '../ApiBackend/SummaryAPI';
+import Axios from '../Utils/Axios';
+import AxiosToastError from '../Utils/AxiosToastError';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -170,6 +170,10 @@ const Register: React.FC = () => {
                 backgroundColor: '#276b77ff',
                 color: '#fff',
                 textTransform: 'none',
+                paddingY: 1.2,
+                paddingX: 2,
+                fontWeight: 'bold',
+                fontSize: '16px',
                 '&:hover': { backgroundColor: '#074061ff' },
               }}
             >

@@ -7,12 +7,12 @@ import 'swiper/css/navigation';
 import { Box, IconButton } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import MovieCard from '../components/movieCard';
-import tmdbApi, { category } from '../api/tmdbApi';
+import MovieCard from '../Components/MovieCard';
+import tmdbApi, { category } from '../ApiTmdb/tmdbApi';
 import axios from 'axios';
-import apiConfig from '../api/apiConfig';
-import { MediaItem } from '../types/media'; 
-import MovieCardSkeleton from '../components/movieCardSkeleton';
+import apiConfig from '../ApiTmdb/apiConfig';
+import { MediaItem } from '../Interfaces/media'; 
+import MovieCardSkeleton from '../Components/MovieCardSkeleton';
 
 interface MovieListProps {
   category: keyof typeof category;
@@ -97,7 +97,6 @@ const MovieList: React.FC<MovieListProps> = ({ category: cat, type, id, genreId,
         modules={[Navigation]}
         onSwiper={(swiper: SwiperType) => (swiperRef.current = swiper)}
         grabCursor
-        spaceBetween={10}
         slidesPerView="auto"
       >
         {loading ? (

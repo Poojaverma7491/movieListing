@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid'; 
-import MovieCard from '../components/movieCard';
-import { MediaItem } from '../types/media'; 
-import tmdbApi from '../api/tmdbApi';
-import MovieSearch from './movieSearch';
+import MovieCard from './MovieCard';
+import { MediaItem } from '../Interfaces/media'; 
+import tmdbApi from '../ApiTmdb/tmdbApi';
 import {
   Box,
   Container,
   Button,
   Typography,
 } from '@mui/material';
+import { useAuth } from '../Hooks/AuthProvider';
+import MovieCardSkeleton from './MovieCardSkeleton';
+import MovieSearch from './movieSearch';
 import PageHeader from './pageHeader';
-import { useAuth } from '../hooks/AuthProvider';
-import MovieCardSkeleton from './movieCardSkeleton';
-
 type MovieType = 'popular' | 'top_rated' | 'upcoming';
 type TvType = 'popular' | 'top_rated' | 'upcoming';
 
@@ -33,11 +32,11 @@ interface RouteParams {
  
 const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType }) => {
   const [items, setItems] = useState<MediaItem[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(0);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
   const { keyword, genreId } = useParams<RouteParams>();
   const [filters, setFilters] = useState<Record<string, any>>({});
-  const [sortBy, setSortBy] = useState<string>('');
+  const [sortBy, setSortBy] = useState('');
   const { userLoggedIn } = useAuth();
   const [loading, setLoading] = useState(true);
 
@@ -94,7 +93,6 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
         setTotalPage(response?.total_pages || 0);
         setLoading(false);
       } catch (error) {
-        console.error('fetchList error', error);
         setItems([]);
         setTotalPage(0);
       }
@@ -169,7 +167,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
       )}
       <Grid container spacing={4} sx={{ justifyContent: 'center', alignItems: 'center' }}>
         {loading
-        ? Array.from({ length: 10 }).map((_, index) => (
+        ? Array.from({ length: 20 }).map((_, index) => (
             <Grid key={index}>
               <MovieCardSkeleton />
             </Grid>
@@ -182,7 +180,7 @@ const MovieGrid: React.FC<MovieGridProps> = ({ category: cat, type: incomingType
           ): (
           items.map((item) => (
             <Grid key={item.id}>
-              <MovieCard category={normalizedCat} item={item} userLoggedIn={userLoggedIn} />
+              <MovieCard category={normalizedCat} item={item} userLoggedIn={userLoggedIn}/>
             </Grid>
           ))
         )}

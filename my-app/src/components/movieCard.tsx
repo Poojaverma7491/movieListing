@@ -13,11 +13,11 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ShareIcon from '@mui/icons-material/Share';
 import { Rating } from '@mui/material';
-import { category } from '../api/tmdbApi';
-import apiConfig from '../api/apiConfig';
-import { MediaItem } from '../types/media';
+import { category } from '../ApiTmdb/tmdbApi';
+import apiConfig from '../ApiTmdb/apiConfig';
+import { MediaItem } from '../Interfaces/media';
 import toast from 'react-hot-toast';
-import { useAuth } from '../hooks/AuthProvider';
+import { useAuth } from '../Hooks/AuthProvider';
 
 interface MovieCardProps {
   item: MediaItem;
