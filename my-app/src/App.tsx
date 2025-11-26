@@ -1,13 +1,13 @@
 import { Toaster } from 'react-hot-toast';
 import { Outlet, useLocation } from 'react-router-dom';
-import Header from './Components/Navbar';
 import { Box } from '@mui/material';
-import { AuthProvider } from './Hooks/AuthProvider';
-import Footer from './Components/Footer';
+import Footer from './Components/Footer/Footer';
+import Header from './Components/Navbar/Navbar';
+import { AuthProvider } from './Context/AuthProvider';
 
 const App: React.FC = () => {
   const location = useLocation();
-  const hideHeader = ['/login', '/register'].includes(location.pathname);
+  const hideHeader = ['/login'].includes(location.pathname);
    
   return (
     <Box

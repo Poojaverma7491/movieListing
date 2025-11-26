@@ -1,11 +1,11 @@
-import { Router } from 'express'
-import {getBookmarks, addBookmark, removeBookmark} from '../controllers/bookmark.controller.ts'
-import auth from '../middleware/auth.ts'
+import { Router } from "express";
+import { getBookmarksController, addBookmarkController, removeBookmarkController } from "../controllers/bookmark.controller.ts";
+import { requireAuth } from "../middleware/auth.ts";
 
-const bookmarkRouter = Router()
+const bookmarkRouter = Router();
 
-bookmarkRouter.get('/', auth, getBookmarks)
-bookmarkRouter.post('/add', auth, addBookmark)
-bookmarkRouter.post('/remove', auth, removeBookmark)
+bookmarkRouter.get("/", requireAuth, getBookmarksController);
+bookmarkRouter.post("/add", requireAuth, addBookmarkController);
+bookmarkRouter.post("/remove", requireAuth, removeBookmarkController);
 
-export default bookmarkRouter
+export default bookmarkRouter;

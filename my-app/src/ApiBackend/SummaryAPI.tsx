@@ -1,25 +1,25 @@
-export const baseURL = "http://localhost:8080"
-
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 const SummaryApi = {
-    register : {
-        url : '/api/user/register',
-        method : 'post'
+    user: { 
+        url: `${BASE_URL}/api/user`, 
+        method: "get" 
     },
-    login : {
-        url : '/api/user/login',
-        method : 'post'
+    googleLogin: { 
+        url: `${BASE_URL}/api/user/google-login`, 
+        method: "post" 
+    },
+    logout: { 
+        url: `${BASE_URL}/api/user/logout`, 
+        method: "post" 
     },
     bookmark : {
-        url : '/api/bookmarks',
+        url : `${BASE_URL}/api/bookmarks`,
         method : 'post'
     },
     bookmarks : {
-        url : '/api/bookmarks',
-        method : 'get'
+        url : `${BASE_URL}/api/bookmarks`,
+        method : 'get'    
     },
-    googleLogin: {
-        method: 'POST',
-        url: '/api/user/google-login',
-    },
+    
 }
 export default SummaryApi

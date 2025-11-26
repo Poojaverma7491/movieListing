@@ -1,14 +1,11 @@
-import { Router } from 'express'
-import { registerUserController, verifyEmailController, loginController, logoutController, getLoggedInUserController, googleOAuthCallbackController} from '../controllers/user.controller.ts'
-import auth from '../middleware/auth.ts'
+import { Router } from "express";
+import { requireAuth } from "../middleware/auth.ts";
+import { getProfileController, googleLoginController, logoutController } from "../controllers/user.controller.ts";
 
-const userRouter = Router()
+const userRouter = Router();
 
-userRouter.post('/register',registerUserController)
-userRouter.post('/verify-email',verifyEmailController)
-userRouter.post('/login',loginController)
-userRouter.get('/logout',auth,logoutController)
-userRouter.get('/', auth, getLoggedInUserController);
-userRouter.post('/google-login', googleOAuthCallbackController);
+userRouter.get("/", requireAuth, getProfileController);
+userRouter.post("/logout", requireAuth, logoutController);
+userRouter.post("/google-login", googleLoginController);
 
-export default userRouter
+export default userRouter;

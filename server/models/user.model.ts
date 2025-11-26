@@ -1,31 +1,24 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    firebaseUid: { 
-        type: String, 
-        unique: true, 
-        index: true, 
-        required: [true, "Provide firebaseUid"],
-    },
-    fullName : {
-        type : String,
-        required : [true,"Provide fullName"]
-    },
-    email : {
-        type : String,
-        required : [true, "provide email"],
-        unique : true
-    },
-    password : {
-        type : String,
-        required : [true, "provide password"]
-    },
-    refresh_token : {
-        type : String,
-        default : ""
-    }
-})
+export interface IUser extends Document {
+  uid: string;     
+  email?: string;
+  displayName?: string;
+  photoURL?: string;
+  providerId?: string;   
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-const UserModel = mongoose.model("User",userSchema)
+const UserSchema = new Schema<IUser>(
+  {
+    uid: { type: String, unique: true, index: true, required: true },
+    email: { type: String, index: true },
+    displayName: String,
+    photoURL: String,
+    providerId: String,
+  },
+  { timestamps: true }
+);
 
-export default UserModel
+export const User = mongoose.model<IUser>("User", UserSchema);

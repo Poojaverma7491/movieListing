@@ -1,43 +1,50 @@
-import jwt from 'jsonwebtoken';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from "express";
+import { admin } from "../FirebaseAdmin.ts";
+import { User } from "../models/user.model.ts";
 
-interface AuthenticatedRequest extends Request {
-  userId?: string;
+import "express";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        uid: string;
+        email?: string;
+        displayName?: string;
+        photoURL?: string;
+        providerId?: string;
+      };
+    }
+  }
 }
 
-const auth = async ( req: AuthenticatedRequest, res: Response, next: NextFunction ): Promise<Response | void> => {
+export async function requireAuth(req: Request, res: Response, next: NextFunction) {
   try {
-    const token =
-      req.cookies?.accessToken || req.cookies?.token || 
-      req.headers?.authorization?.split(' ')[1];
-
-    if (!token) {
-      return res.status(401).json({
-        message: 'Provide token',
-        success: false,
-      });
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.SECRET_KEY_ACCESS_TOKEN as string
-    ) as { id: string };
-    
-    if (!decoded?.id) {
-      return res.status(401).json({
-        message: 'Unauthorized access',
-        success: false,
-      });
-    }
+    const idToken = authHeader.split("Bearer ")[1];
+    const decoded = await admin.auth().verifyIdToken(idToken);
+    const { uid, email, name: displayName, picture: photoURL } = decoded;
+    const providerId = decoded.firebase?.sign_in_provider;
+    const userDoc = await User.findOneAndUpdate(
+      { uid },
+      { $set: { email, displayName, photoURL, providerId } },
+      { new: true, upsert: true }
+    );
 
-    req.userId = decoded.id;
-    next();
-  } catch (error: unknown) {
-    return res.status(500).json({
-      message: 'Invalid or expired token',
-      success: false,
-    });
+    req.user = {
+      uid,
+      email: userDoc.email,
+      displayName: userDoc.displayName,
+      photoURL: userDoc.photoURL,
+      providerId: userDoc.providerId,
+    };
+
+    return next();
+  } catch {
+    res.status(401).json({ success: false, message: "Unauthorized" });
   }
-};
-
-export default auth;
+}

@@ -1,42 +1,30 @@
-import express from 'express'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-import morgan from 'morgan'
-import helmet from 'helmet'
-import connectDB from './config/connectDB.ts'
-import userRouter from './routes/user.route.ts'
-import bookmarkRouter from './routes/bookmark.route.ts'
-import { logoutController } from './controllers/user.controller.ts'
-import auth from './middleware/auth.ts'
-import dotenv from 'dotenv'
-dotenv.config()
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import helmet from "helmet";
+import dotenv from "dotenv";
+import bookmarkRouter from "./routes/bookmark.route.ts";
+import connectDB from "./config/connectDB.ts";
+import userRouter from "./routes/user.route.ts";
 
-const app = express()
-app.use(cors({
-    credentials : true,
-    origin : process.env.FRONTEND_URL
-}))
+dotenv.config();
 
-app.use(express.json())
-app.use(cookieParser())
-app.use(morgan('combined'))
-app.use(helmet({
-    crossOriginResourcePolicy : false
-}))
+const app = express();
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true, allowedHeaders: ["Content-Type", "Authorization"]}));
+app.use(express.json());
+app.use(morgan("combined"));
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
-const PORT = 8080
-app.use('/api/user',userRouter)
-app.use('/api/bookmarks', bookmarkRouter)
-app.get('/api/logout', auth, logoutController);
+app.get("/", (_req, res) => {
+  res.json({ message: "Server is running" });
+});
 
-app.get("/",(request,response)=>{
-    response.json({
-        message : "Server is running at" + PORT
-    })
-})    
+app.use("/api/user", userRouter);
+app.use("/api/bookmarks", bookmarkRouter);
 
-connectDB().then(()=>{
-    app.listen(PORT,()=>{
-        console.log("Server is running at ",PORT)
-    })
-})
+
+const PORT = process.env.PORT || 8080;
+
+connectDB().then(() => {
+  app.listen(PORT, () => console.log("Server listening on", PORT));
+});
