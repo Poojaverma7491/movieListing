@@ -66,3 +66,5 @@ Thumbs.db
 .idea/
 /ServiceAccountKey.json
 /ServiceAccountKey.json
+.vercel
+.env*.local
