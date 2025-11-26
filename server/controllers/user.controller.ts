@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import {User} from "../models/user.model.ts"
-import { admin } from "../FirebaseAdmin.ts";
+import {User} from "../models/user.model"
+import { admin } from "../FirebaseAdmin";
 
 export async function getProfileController(req: Request, res: Response): Promise<void> {
   try {

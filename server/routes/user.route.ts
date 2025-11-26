@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { requireAuth } from "../middleware/auth.ts";
-import { getProfileController, googleLoginController, logoutController } from "../controllers/user.controller.ts";
+import { requireAuth } from "../middleware/auth";
+import { getProfileController, googleLoginController, logoutController } from "../controllers/user.controller";
 
 const userRouter = Router();
 

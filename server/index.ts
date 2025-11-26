@@ -3,9 +3,9 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import bookmarkRouter from "./routes/bookmark.route.ts";
-import connectDB from "./config/connectDB.ts";
-import userRouter from "./routes/user.route.ts";
+import bookmarkRouter from "./routes/bookmark.route";
+import connectDB from "./config/connectDB";
+import userRouter from "./routes/user.route";
 
 dotenv.config();
 

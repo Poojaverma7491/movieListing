@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { admin } from "../FirebaseAdmin.ts";
-import { User } from "../models/user.model.ts";
+import { admin } from "../FirebaseAdmin";
+import { User } from "../models/user.model";
 
 import "express";
 

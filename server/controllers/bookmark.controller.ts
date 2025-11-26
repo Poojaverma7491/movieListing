@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import BookmarkModel from "../models/bookmark.model.ts";
+import BookmarkModel from "../models/bookmark.model";
 
 export async function getBookmarksController(req: Request, res: Response) {
   try {

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getBookmarksController, addBookmarkController, removeBookmarkController } from "../controllers/bookmark.controller.ts";
-import { requireAuth } from "../middleware/auth.ts";
+import { getBookmarksController, addBookmarkController, removeBookmarkController } from "../controllers/bookmark.controller";
+import { requireAuth } from "../middleware/auth";
 
 const bookmarkRouter = Router();
 
