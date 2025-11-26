@@ -9,5 +9,5 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["server/**/*", "index.ts"]
+  "include": ["server/**/*", "index"]
 }
