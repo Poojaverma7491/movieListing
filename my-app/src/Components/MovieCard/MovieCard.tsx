@@ -66,7 +66,8 @@ const MovieCard: React.FC<MovieCardProps> = ({ item, category, bookmarkedOverrid
             component="div"
             sx={{
               height: { xs: 220, sm: 250, md: 250 },
-              backgroundImage: `url(${apiConfig.w500Image(item.poster_path || item.backdrop_path || '')})`,
+              // backgroundImage: `url(${apiConfig.w500Image(item.poster_path || item.backdrop_path || '')})`,
+              backgroundImage: `url(https://image.tmdb.org/t/p/w500/${item.poster_path || item.backdrop_path || ''})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               position: "relative",
