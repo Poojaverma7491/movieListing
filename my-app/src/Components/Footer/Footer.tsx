@@ -65,7 +65,7 @@ const Footer = () => {
         backgroundColor: "rgba(45, 50, 51, 0.9)",
         color: "#f0f0f0",
         py: { xs: 3, sm: 4 },
-        px: { xs: 2, sm: 6 },
+        px: { xs: 2, sm: 6, md: 8 },
         mt: { xs: 4, sm: 6 },
       }}
     >
@@ -77,30 +77,30 @@ const Footer = () => {
       >
         {/* Left Section */}
         <Grid>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
+          <Typography variant="h6" fontWeight="bold" gutterBottom  sx={{ fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem", lg: "1.6rem" }, }}>
             MovieListing App
           </Typography>
-          <Typography variant="body2" sx={{ mb: 2 }}>
+          <Typography variant="body2" sx={{ fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" }, mb: 2 }}>
             Discover trending movies, build your watchlist, and explore more...
           </Typography>
-          <Typography variant="caption">
+          <Typography variant="caption" sx={{ fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" }, }}>
             &copy; {new Date().getFullYear()} All rights reserved.
           </Typography>
         </Grid>
 
         {/* Middle Section - Links */}
         <Grid>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
+          <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" }, }}>
             Quick Links
           </Typography>
           <Stack spacing={1}>
-            <Link href="/home" underline="hover" color="inherit">
+            <Link href="/home" underline="hover" color="inherit" sx={{ fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" } }}>
               Explore
             </Link>
-            <Link href="/home" underline="hover" color="inherit">
+            <Link href="/home" underline="hover" color="inherit" sx={{ fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" } }}>
               About
             </Link>
-            <Link href="/home" underline="hover" color="inherit">
+            <Link href="/home" underline="hover" color="inherit" sx={{ fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" } }}>
               Contact
             </Link>
           </Stack>
@@ -108,7 +108,7 @@ const Footer = () => {
 
         {/* Right Section - Socials */}
         <Grid>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
+          <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" }, }}>
             Connect with Us
           </Typography>
           <Stack direction="row" spacing={1}>
@@ -135,7 +135,7 @@ const Footer = () => {
             </IconButton>
           </Stack>
 
-          <Typography variant="body2" sx={{ mt: 2 }}>
+          <Typography variant="body2" sx={{ fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" }, mt: 2 }}>
             Developer: <strong>Pooja Verma</strong>
           </Typography>
         </Grid>

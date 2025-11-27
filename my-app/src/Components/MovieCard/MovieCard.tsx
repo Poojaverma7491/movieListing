@@ -8,9 +8,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import { Rating } from '@mui/material';
 import LoginDialog from '../AuthPages/LoginDialog';
 import { MovieCardProps } from '../../Utils/Interfaces';
-import apiConfig from '../../ApiTmdb/ApiConfig';
 import { checkBookmarkStatus, handleShare, toggleBookmarkRequest } from '../../HelperFunctions/MovieCardFunctions';
 import { useAuth } from '../../Context/AuthProvider';
+import apiConfig from '../../ApiTmdb/ApiConfig';
 
 const MovieCard: React.FC<MovieCardProps> = ({ item, category, bookmarkedOverride = null, }) => {
   const link = `/home/${category}/${item.id}`;

@@ -19,12 +19,7 @@ const GenreList: React.FC = () => {
   const { genres, loading, error } = FetchGenres(currentCategory);
 
   return (
-    <Box
-      sx={{
-        py: 4,
-        px: 10,
-      }}
-    >
+    <Box>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <IconButton
           onClick={() => swiperRef.current?.slidePrev()}
@@ -46,8 +41,7 @@ const GenreList: React.FC = () => {
           onSwiper={(swiper: SwiperType) => (swiperRef.current = swiper)}
           grabCursor
           slidesPerView="auto"
-          style={{ width: '100%' }}
-          spaceBetween={3} 
+          spaceBetween={18} 
         >
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
@@ -56,14 +50,14 @@ const GenreList: React.FC = () => {
               </SwiperSlide>
             ))
           ) : error ? (
-            <SwiperSlide style={{ width: '100%' }}>
+            <SwiperSlide style={{ width: '100' }}>
               <Typography color="error" textAlign="center">
                 Failed to load categories
               </Typography>
             </SwiperSlide>
           ) : genres.length > 0 ? (
             genres.map((g, i) => (
-              <SwiperSlide key={g.id} style={{ width: 220 }}>
+              <SwiperSlide key={g.id} style={{ width: 'auto' }}>
                 <GenreCard index={i} title={g.name} genreId={g.id} />
               </SwiperSlide>
             ))

@@ -29,12 +29,7 @@ const MovieList: React.FC<MovieListProps> = ({ category, type, id, genreId, user
   }, [category, id, type, genreId]);
 
   return (
-    <Box
-      sx={{
-        py: 3,
-        px: 10
-      }}
-    >
+    <Box>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <IconButton
           onClick={() => swiperRef.current?.slidePrev()}
@@ -56,6 +51,7 @@ const MovieList: React.FC<MovieListProps> = ({ category, type, id, genreId, user
           onSwiper={(swiper: SwiperType) => (swiperRef.current = swiper)}
           grabCursor
           slidesPerView="auto"
+          spaceBetween={20}
         >
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
@@ -65,7 +61,7 @@ const MovieList: React.FC<MovieListProps> = ({ category, type, id, genreId, user
             ))
           ) : items.length > 0 ? (
             items.map((item) => (
-              <SwiperSlide key={item.id} style={{ width: 220 }}>
+              <SwiperSlide key={item.id} style={{ width: "auto" }}>
                 <MovieCard item={item} category={category} userLoggedIn={userLoggedIn} />
               </SwiperSlide>
             ))

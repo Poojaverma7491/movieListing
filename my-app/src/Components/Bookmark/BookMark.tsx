@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Link as RouterLink } from "react-router-dom";
 import { MediaItem } from "../../Utils/Interfaces";
 import { Category } from "../../Utils/utils";
 import fetchBookmarks from "../../HelperFunctions/FetchBookmark";
@@ -10,12 +9,14 @@ import MovieCardSkeleton from "../Skeletons/MovieCardSkeleton";
 import AppButton from "../Common/AppButton";
 import MovieCard from "../MovieCard/MovieCard";
 import { useAuth } from "../../Context/AuthProvider";
+import LoginDialog from "../AuthPages/LoginDialog";
 
 
 const BookMark: React.FC = () => {
   const [bookmarked, setBookmarked] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeType, setActiveType] = useState<Category>("movie");
+  const [loginOpen, setLoginOpen] = useState<boolean>(false);
   const { user, loading: authLoading, userLoggedIn } = useAuth();
 
   const loadBookmarks = async (category: Category) => {
@@ -52,9 +53,10 @@ const BookMark: React.FC = () => {
           >
             Please log in to view your bookmarks.
           </Typography>
-          <AppButton component={RouterLink} to="/login?redirect=/bookmarks">
+          <AppButton onClick={() => setLoginOpen(true)}>
             Log In
           </AppButton>
+          <LoginDialog open={loginOpen} onClose={() => setLoginOpen(false)} />
         </Box>
       );
     }
@@ -87,12 +89,11 @@ const BookMark: React.FC = () => {
   };
 
   return (
-      <Box sx={{ px: 3, }}>
+      <Box>
         <Typography
           color="white"
           variant="h4"
-          padding={4}
-          sx={{ fontWeight: "bold", textAlign: "center" }}>
+          sx={{ fontWeight: "bold", textAlign: "center", py: 4, pt:4}}>
           Your Bookmarked Media
         </Typography>
         <Box 

@@ -7,7 +7,7 @@ import GenreList from '../GenreCard/GenreList';
 const Home: React.FC = () => (
   <Box
     sx={{
-       width: '100%',
+      width: '100%',
       display: 'flex',
       flexDirection: 'column',
       gap: { xs: 4, sm: 5, md: 6 },
