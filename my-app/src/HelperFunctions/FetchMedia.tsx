@@ -1,4 +1,4 @@
-import tmdbApi from "../ApiTmdb/TmdbApi";
+import tmdbApi from "../ApiTmdb/ApiTmdb";
 import { MovieItem, MovieTvListResponse } from "../Utils/Interfaces";
 import { Category, ListType } from "../Utils/utils";
 

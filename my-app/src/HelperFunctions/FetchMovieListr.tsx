@@ -1,5 +1,5 @@
 import apiConfig from "../ApiTmdb/ApiConfig";
-import tmdbApi from "../ApiTmdb/TmdbApi";
+import tmdbApi from "../ApiTmdb/ApiTmdb";
 import { MediaItem } from "../Utils/Interfaces";
 import { Category, ListType } from "../Utils/utils";
 

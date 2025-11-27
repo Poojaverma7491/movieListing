@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Chip } from '@mui/material';
 import { MediaDetail, RouteParams } from '../../Utils/Interfaces';
-import tmdbApi from '../../ApiTmdb/TmdbApi';
+import tmdbApi from '../../ApiTmdb/ApiTmdb';
 import DetailSkeleton from '../Skeletons/MovieDetailSkeleton';
 import apiConfig from '../../ApiTmdb/ApiConfig';
 import MovieList from '../MovieList/MovieList';

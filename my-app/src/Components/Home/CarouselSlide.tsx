@@ -5,7 +5,7 @@ import { Box, Typography,  Dialog,  DialogContent, } from '@mui/material';
 import { MovieItem } from '../../Utils/Interfaces';
 import CarouselSkeleton from '../Skeletons/CarouselSlideSkeleton';
 import CarouselItem from './CarouselSlideItems';
-import tmdbApi from '../../ApiTmdb/TmdbApi';
+import tmdbApi from '../../ApiTmdb/ApiTmdb';
 
 const CarouselSlide: React.FC = () => {
   

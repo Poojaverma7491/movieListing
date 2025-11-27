@@ -1,4 +1,4 @@
-import tmdbApi from "../ApiTmdb/TmdbApi";
+import tmdbApi from "../ApiTmdb/ApiTmdb";
 import { Suggestion } from "../Utils/Interfaces";
 import { Category } from "../Utils/utils";
 

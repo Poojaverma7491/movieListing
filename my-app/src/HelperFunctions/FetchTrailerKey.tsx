@@ -1,4 +1,4 @@
-import tmdbApi from "../ApiTmdb/TmdbApi";
+import tmdbApi from "../ApiTmdb/ApiTmdb";
 import { VideoResponse } from "../Utils/Interfaces";
 
 async function FetchTrailerKey( category: "movie" | "tv", id: string | number ): Promise<string | null> {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Props, RequestParams } from '../../Utils/Interfaces';
-import tmdbApi from '../../ApiTmdb/TmdbApi';
+import tmdbApi from '../../ApiTmdb/ApiTmdb';
 import { Link } from 'react-router-dom';
 
 const GenreCard: React.FC<Props> = ({ title, genreId }) => {

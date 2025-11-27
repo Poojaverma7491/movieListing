@@ -1,6 +1,6 @@
 import { getAuth } from "firebase/auth";
 import SummaryApi from "../ApiBackend/SummaryAPI";
-import tmdbApi from "../ApiTmdb/TmdbApi";
+import tmdbApi from "../ApiTmdb/ApiTmdb";
 import { BookmarkResponse, MediaItem } from "../Utils/Interfaces";
 import { Category } from "../Utils/utils";
 
