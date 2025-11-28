@@ -10,6 +10,7 @@ import LoginDialog from '../AuthPages/LoginDialog';
 import { MovieCardProps } from '../../Utils/Interfaces';
 import { checkBookmarkStatus, handleShare, toggleBookmarkRequest } from '../../HelperFunctions/MovieCardFunctions';
 import { useAuth } from '../../Context/AuthProvider';
+import apiConfig from '../../ApiTmdb/ApiConfig';
 
 const MovieCard: React.FC<MovieCardProps> = ({ item, category, bookmarkedOverride = null, }) => {
   const link = `/home/${category}/${item.id}`;
@@ -65,8 +66,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ item, category, bookmarkedOverrid
             component="div"
             sx={{
               height: { xs: 220, sm: 250, md: 250 },
-              // backgroundImage: `url(${apiConfig.w500Image(item.poster_path || item.backdrop_path || '')})`,
-              backgroundImage: `url(https://image.tmdb.org/t/p/w500/${item.poster_path || item.backdrop_path || ''})`,
+              backgroundImage: `url(${apiConfig.w500Image(item.poster_path || item.backdrop_path || '')})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               position: "relative",

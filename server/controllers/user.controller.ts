@@ -19,7 +19,7 @@ export async function logoutController(req: Request, res: Response): Promise<voi
   try {
     res.json({
       success: true,
-      message: "Logged out (client should sign out of Firebase)",
+      message: "Logged out",
     });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message });
@@ -49,31 +49,5 @@ export async function googleLoginController(req: Request, res: Response): Promis
     res.json({ success: true, data: userDoc });
   } catch (err: any) {
     res.status(401).json({ success: false, message: err.message });
-  }
-}
-
-// Register new user
-
-export async function registerUserController(req: Request, res: Response): Promise<void> {
-  try {
-    const { uid, email, displayName } = req.body;
-
-    if (!uid || !email || !displayName) {
-      res.status(400).json({ success: false, message: "Missing required fields" });
-      return;
-    }
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      res.status(400).json({ success: false, message: "Email already registered" });
-      return;
-    }
-
-    const newUser = new User({ uid, email, displayName });
-    await newUser.save();
-
-    res.json({ success: true, message: "Registration successful", data: newUser });
-  } catch (err) {
-    res.status(500).json({ success: false, message: (err as Error).message });
   }
 }

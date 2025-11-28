@@ -13,14 +13,12 @@ const useFetchLanguages = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const controller = new AbortController();
 
     const fetchLanguages = async () => {
       setLoading(true);
       try {
         const res = await fetch(
           `${apiConfig.baseUrl}/configuration/languages?api_key=${apiConfig.apiKey}`,
-          { signal: controller.signal }
         );
         if (!res.ok) throw new Error("Failed to fetch languages");
         const data = await res.json();
@@ -33,7 +31,6 @@ const useFetchLanguages = () => {
     };
 
     fetchLanguages();
-    return () => controller.abort();
   }, []);
 
   return { languages, loading, error };
