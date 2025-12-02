@@ -2,7 +2,7 @@
 
 A full‑stack web application built with React (TypeScript), Node.js/Express, and Firebase Authentication, designed to browse and search movies using the TMDB API.
 
-####  🚀 Features
+##  🚀 Features
 
 🔐 User Authentication with Firebase (Google login, secure session handling)
 
@@ -14,7 +14,7 @@ A full‑stack web application built with React (TypeScript), Node.js/Express, a
 
 ⚡ Reusable Fetch Client with error handling and query string support
 
-####  🛠️ Tech Stack
+##  🛠️ Tech Stack
 
 Frontend: React + TypeScript, Material‑UI
 
@@ -27,6 +27,6 @@ Database: MongoDB (optional for bookmarks/favorites)
 Version Control: Git + GitHu
 
 
-####  📸 Live Demo
+###  📸 Live Demo
 
 https://lambent-dolphin-bb1c84.netlify.app/
