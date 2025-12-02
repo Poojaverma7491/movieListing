@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import apiConfig from "../ApiTmdb/ApiConfig";
+import ApiConfig from "../ApiTmdb/ApiConfig";
 
 interface Language {
   iso_639_1: string;
@@ -18,7 +18,7 @@ const useFetchLanguages = () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `${apiConfig.baseUrl}/configuration/languages?api_key=${apiConfig.apiKey}`,
+          `${ApiConfig.baseUrl}/configuration/languages?api_key=${ApiConfig.apiKey}`,
         );
         if (!res.ok) throw new Error("Failed to fetch languages");
         const data = await res.json();

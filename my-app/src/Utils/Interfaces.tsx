@@ -164,7 +164,7 @@ export interface RequestParams {
 }
 
 // ApiConfig
-export interface ApiConfig {
+export interface ApiConfiguration {
   baseUrl: string;
   apiKey: string;
   originalImage: (imgPath: string) => string;

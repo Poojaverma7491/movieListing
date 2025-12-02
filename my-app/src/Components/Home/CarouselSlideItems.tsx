@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
-import apiConfig from "../../ApiTmdb/ApiConfig";
+import ApiConfig from "../../ApiTmdb/ApiConfig";
 import { CarouselItemProps } from "../../Utils/Interfaces";
 import AppButton from "../Common/AppButton";
 import fetchTrailerKey from "../../HelperFunctions/FetchTrailerKey";
@@ -14,7 +14,7 @@ const CarouselSlideItem: React.FC<CarouselItemProps> = ({ item, onTrailerOpen })
   return (
     <Box
       sx={{
-        backgroundImage: `url(${apiConfig.originalImage(item.backdrop_path || item.poster_path || '')})`,
+        backgroundImage: `url(${ApiConfig.originalImage(item.backdrop_path || item.poster_path || '')})`,
         backgroundSize: 'cover',
         minheight: { xs: '30vh', sm: '50vh', md: '80vh' },
         display: 'flex',
@@ -63,7 +63,7 @@ const CarouselSlideItem: React.FC<CarouselItemProps> = ({ item, onTrailerOpen })
         </Stack>
         <Box sx={{ mt: 4, display: { xs: 'none', sm: 'none', md: 'block' } }}>
           <img
-            src={apiConfig.w500Image(item.poster_path || '')}
+            src={ApiConfig.w500Image(item.poster_path || '')}
             alt={item.title}
             style={{ width: '100%',
             maxWidth: '200px', 

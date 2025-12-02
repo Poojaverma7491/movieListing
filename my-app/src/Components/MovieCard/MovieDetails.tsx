@@ -4,7 +4,7 @@ import { Box, Typography, Chip } from '@mui/material';
 import { MediaDetail, RouteParams } from '../../Utils/Interfaces';
 import tmdbApi from '../../ApiTmdb/ApiTmdb';
 import DetailSkeleton from '../Skeletons/MovieDetailSkeleton';
-import apiConfig from '../../ApiTmdb/ApiConfig';
+import ApiConfig from '../../ApiTmdb/ApiConfig';
 import MovieList from '../MovieList/MovieList';
 
 const MovieDetail: React.FC = () => {
@@ -53,7 +53,7 @@ const MovieDetail: React.FC = () => {
         <Box
           sx={{
             flex: 1,
-            backgroundImage: `url(${apiConfig.originalImage(item.poster_path || item.backdrop_path || '')})`,
+            backgroundImage: `url(${ApiConfig.originalImage(item.poster_path || item.backdrop_path || '')})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             borderRadius: 2,

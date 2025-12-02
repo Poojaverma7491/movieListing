@@ -1,4 +1,4 @@
-import apiConfig from "../ApiTmdb/ApiConfig";
+import ApiConfig from "../ApiTmdb/ApiConfig";
 import tmdbApi from "../ApiTmdb/ApiTmdb";
 import { MediaItem } from "../Utils/Interfaces";
 import { Category, ListType } from "../Utils/utils";
@@ -18,10 +18,10 @@ export const FetchMovieList = async (
         response = await (tmdbApi as any).discover(category, { params: { with_genres: genreId } });
       } else {
         const url = category === "movie"
-          ? `${apiConfig.baseUrl}/discover/movie`
-          : `${apiConfig.baseUrl}/discover/tv`;
+          ? `${ApiConfig.baseUrl}/discover/movie`
+          : `${ApiConfig.baseUrl}/discover/tv`;
 
-        const res = await fetch(url + `?api_key=${apiConfig.apiKey}&with_genres=${genreId}&language=en-US&sort_by=popularity.desc&page=1`, { signal });
+        const res = await fetch(url + `?api_key=${ApiConfig.apiKey}&with_genres=${genreId}&language=en-US&sort_by=popularity.desc&page=1`, { signal });
         response = await res.json();
       }
       return response?.results || [];

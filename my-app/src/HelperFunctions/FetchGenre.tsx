@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Genre } from "../Utils/Interfaces";
 import { Category } from "../Utils/utils";
-import apiConfig from "../ApiTmdb/ApiConfig";
+import ApiConfig from "../ApiTmdb/ApiConfig";
 
 const FetchGenres = (category: Category) => {
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -14,7 +14,7 @@ const FetchGenres = (category: Category) => {
       setError(null);
       try {
         const res = await fetch(
-          `${apiConfig.baseUrl}/genre/${category}/list?api_key=${apiConfig.apiKey}&language=en-US`,
+          `${ApiConfig.baseUrl}/genre/${category}/list?api_key=${ApiConfig.apiKey}&language=en-US`,
         );
         if (!res.ok) throw new Error("Failed to fetch genres");
         const data = await res.json();
