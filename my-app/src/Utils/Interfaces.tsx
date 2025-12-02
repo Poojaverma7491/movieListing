@@ -1,9 +1,9 @@
 import { ReactNode, RefObject } from "react";
-import { Category} from "./utils"
 import { ButtonProps } from "@mui/material";
 import { LinkProps } from "react-router-dom";
 import { SxProps, Theme } from "@mui/system";
 import type { Swiper as SwiperType } from "swiper";
+import { Category } from "./utils";
 
 // Media
 export interface BaseMedia {

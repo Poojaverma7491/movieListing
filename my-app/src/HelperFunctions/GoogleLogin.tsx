@@ -1,6 +1,6 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../Firebase";
 import SummaryApi from "../ApiBackend/SummaryAPI";
+import { auth } from "../Firebase";
 
 export async function GoogleLogin() {
   const provider = new GoogleAuthProvider();

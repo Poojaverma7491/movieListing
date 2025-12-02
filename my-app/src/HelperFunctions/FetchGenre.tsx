@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Genre } from "../Utils/Interfaces";
-import { Category } from "../Utils/utils";
 import ApiConfig from "../ApiTmdb/ApiConfic";
+import { Category } from "../Utils/utils";
 
 const FetchGenres = (category: Category) => {
   const [genres, setGenres] = useState<Genre[]>([]);
