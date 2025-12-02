@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ApiConfig from "../ApiTmdb/ApiConfig";
+import ApiConfig from "../ApiTmdb/ApiConfic";
 
 interface Language {
   iso_639_1: string;

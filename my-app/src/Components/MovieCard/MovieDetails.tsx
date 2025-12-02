@@ -4,8 +4,8 @@ import { Box, Typography, Chip } from '@mui/material';
 import { MediaDetail, RouteParams } from '../../Utils/Interfaces';
 import tmdbApi from '../../ApiTmdb/ApiTmdb';
 import DetailSkeleton from '../Skeletons/MovieDetailSkeleton';
-import ApiConfig from '../../ApiTmdb/ApiConfig';
 import MovieList from '../MovieList/MovieList';
+import ApiConfig from '../../ApiTmdb/ApiConfic';
 
 const MovieDetail: React.FC = () => {
   const { category, id } = useParams<RouteParams>();
