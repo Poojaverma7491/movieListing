@@ -5,7 +5,7 @@ import { MediaDetail, RouteParams } from '../../Utils/Interfaces';
 import tmdbApi from '../../ApiTmdb/ApiTmdb';
 import DetailSkeleton from '../Skeletons/MovieDetailSkeleton';
 import MovieList from '../MovieList/MovieList';
-import ApiConfig from '../../ApiTmdb/ApiConfic';
+import ApiConfig from '../../ApiTmdb/ApiConfig';
 
 const MovieDetail: React.FC = () => {
   const { category, id } = useParams<RouteParams>();

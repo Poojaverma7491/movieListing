@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Genre } from "../Utils/Interfaces";
-import ApiConfig from "../ApiTmdb/ApiConfic";
+import ApiConfig from "../ApiTmdb/ApiConfig";
 import { Category } from "../Utils/utils";
 
 const FetchGenres = (category: Category) => {

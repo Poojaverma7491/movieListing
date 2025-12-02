@@ -10,7 +10,7 @@ import LoginDialog from '../AuthPages/LoginDialog';
 import { MovieCardProps } from '../../Utils/Interfaces';
 import { checkBookmarkStatus, handleShare, toggleBookmarkRequest } from '../../HelperFunctions/MovieCardFunctions';
 import { useAuth } from '../../Context/AuthProvider';
-import ApiConfig from '../../ApiTmdb/ApiConfic';
+import ApiConfig from '../../ApiTmdb/ApiConfig';
 
 const MovieCard: React.FC<MovieCardProps> = ({ item, category, bookmarkedOverride = null, }) => {
   const link = `/home/${category}/${item.id}`;

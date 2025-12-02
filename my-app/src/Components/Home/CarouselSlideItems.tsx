@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import { CarouselItemProps } from "../../Utils/Interfaces";
 import AppButton from "../Common/AppButton";
 import fetchTrailerKey from "../../HelperFunctions/FetchTrailerKey";
-import ApiConfig from "../../ApiTmdb/ApiConfic";
+import ApiConfig from "../../ApiTmdb/ApiConfig";
 
 const CarouselSlideItem: React.FC<CarouselItemProps> = ({ item, onTrailerOpen }) => {
 
