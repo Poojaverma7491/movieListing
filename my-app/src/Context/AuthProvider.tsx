@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import { auth } from "../Firebase";
 import { browserLocalPersistence, onAuthStateChanged, setPersistence } from "firebase/auth";
 import { AuthContextType, User } from "../Utils/Interfaces";
+import { auth } from "../Firebase";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

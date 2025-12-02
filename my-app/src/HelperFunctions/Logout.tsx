@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../Context/AuthProvider";
 import { signOut } from "firebase/auth";
-import { auth } from "../Firebase";
+import { auth } from "../firebase";
 
 export const useAuthActions = () => {
   const { setUser } = useAuth();
