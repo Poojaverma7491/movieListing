@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import apiConfig from "./ApiConfig";
+import ApiConfig from "./ApiConfig";
 
 export async function FetchClient<T>(
   endpoint: string,
@@ -11,8 +11,8 @@ export async function FetchClient<T>(
   } = {}
 ): Promise<T> {
   const { params = {}, method = "GET", body, headers = {} } = options;
-  const query = queryString.stringify({ ...params, api_key: apiConfig.apiKey });
-  const url = `${apiConfig.baseUrl}/${endpoint}?${query}`;
+  const query = queryString.stringify({ ...params, api_key: ApiConfig.apiKey });
+  const url = `${ApiConfig.baseUrl}/${endpoint}?${query}`;
 
   const res = await fetch(url, {
     method,
@@ -25,7 +25,9 @@ export async function FetchClient<T>(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw { response: { data: errorData, status: res.status } };
+    const error = new Error("Request failed");
+    (error as any).response = { data: errorData, status: res.status };
+    throw error;
   }
   return res.json() as Promise<T>;
 }
